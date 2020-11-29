@@ -52,7 +52,8 @@ namespace ExtractionApplication
         {
             Image image = FilledContainer_pictureBox.Image;
             Channel ch = Red_radioButton.Checked ? Channel.R : Green_radioButton.Checked ? Channel.G : Channel.B;
-            string message = Extraction.ExtractMessage(image, ch);
+            Int32 number = Convert.ToInt32(Number_numericUpDown.Value);
+            string message = Extraction.ExtractMessage(image, ch, number);
             Message_textBox.Text = message;
         }
 

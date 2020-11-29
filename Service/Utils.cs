@@ -16,13 +16,15 @@ namespace Steganography.Service
             return bitArr.Length;
         }
 
-        public static bool CheckSize(Int32 size, Bitmap bm)
+        public static bool CheckSize(Int32 size, Bitmap bm, int number)
         {
+            if (number == 0) number += 1;
             int bmSize = INT_SIZE_IN_BIT + (bm.Width * bm.Height);
+            size *= number;
             return size <= bmSize;
         }
 
-        public static BitArray GetResultBitArray(string message, Int32 msgSize)
+        public static BitArray CreateResultBitArray(string message, Int32 msgSize)
         {
             int size = GetMessageSizeInBit(message) + INT_SIZE_IN_BIT;
             BitArray result = new BitArray(size);
@@ -34,6 +36,14 @@ namespace Steganography.Service
             {
                 result[i] = Convert.ToBoolean(Convert.ToInt32(resultBitStr[i].ToString()));
             }
+
+            return result;
+        }
+
+        public static string GetResultBitArray(Bitmap bm)
+        {
+            string result = null;
+
 
             return result;
         }

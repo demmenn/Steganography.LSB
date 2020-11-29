@@ -16,29 +16,33 @@ namespace Steganography.Service
     public static class Embedding
     {
 
-        public static Image EmbedMessageInImage(string message, Image container, Channel channel)
+        public static Image EmbedMessageInImage(string message, Image container, Channel channel, Int32 number)
         {
             Image result = null;
             if (!String.IsNullOrEmpty(message))
             {
                 Bitmap temp = new Bitmap(container);
                 Int32 messageSizeInBit = Utils.GetMessageSizeInBit(message);
-                if (Utils.CheckSize(messageSizeInBit, temp))
+                if (Utils.CheckSize(messageSizeInBit, temp, number))
                 {
-                    WriteMessage(temp, message, messageSizeInBit, channel);
+                    WriteMessage(temp, message, messageSizeInBit, channel, number);
                     result = temp;
                 }
             }
             return result;
         }
 
-        private static void WriteMessage(Bitmap bm, string message, Int32 msgSize, Channel channel)
+        private static void WriteMessage(Bitmap bm, string message, Int32 msgSize, Channel channel, Int32 number)
         {
             int bitIndex = 0;
-            BitArray msg = Utils.GetResultBitArray(message, msgSize);
+            BitArray msg = Utils.CreateResultBitArray(message, msgSize);
+            if (number == 0)
+                number += 1;
+            int j_numb = 0;
             for (int i = 0; i < bm.Width; i++)
             {
-                for (int j = 0; j < bm.Height; j++)
+                int j = j_numb;
+                for (; j < bm.Height; j += number)
                 {
                     if (bitIndex < msg.Length)
                     {
@@ -62,6 +66,12 @@ namespace Steganography.Service
                     else
                     {
                         return;
+                    }
+
+                    if ((j + number) >= bm.Height)
+                    {
+                        j_numb = (j + number) - bm.Height;
+                        break;
                     }
                 }
             }

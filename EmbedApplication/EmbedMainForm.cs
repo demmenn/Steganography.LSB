@@ -78,17 +78,24 @@ namespace EmbedApplication
             string message = Message_textBox.Text;
             Image container = Container_pictureBox.Image;
             Channel ch = Red_radioButton.Checked ? Channel.R : Green_radioButton.Checked ? Channel.G : Channel.B;
-            Image filledContainer = Embedding.EmbedMessageInImage(message, container, ch);
+            Int32 number = Convert.ToInt32(Number_numericUpDown.Value);
+            Image filledContainer = Embedding.EmbedMessageInImage(message, container, ch, number);
             FilledContainer_pictureBox.Image = filledContainer;
-            SaveFillContainer_button.Enabled = true;
+            if (FilledContainer_pictureBox.Image != null)
+            {
+
+                SaveFillContainer_button.Enabled = true;
+            }
         }
 
         private void SaveFillContainer_button_Click(object sender, EventArgs e)
         {
-            SaveFileDialog fileDialog = new SaveFileDialog();
-            fileDialog.Filter = "All Files(*.*)|*.*|PNG Image(*.png)|*.png";
-            fileDialog.FilterIndex = 2;
-            fileDialog.RestoreDirectory = true;
+            SaveFileDialog fileDialog = new SaveFileDialog
+            {
+                Filter = "All Files(*.*)|*.*|PNG Image(*.png)|*.png",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
 
             if (fileDialog.ShowDialog() != DialogResult.Cancel)
             {
