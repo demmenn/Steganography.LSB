@@ -37,11 +37,16 @@ namespace ExtractionApplication
             this.ExtractMessage_button = new System.Windows.Forms.Button();
             this.Cancel_button = new System.Windows.Forms.Button();
             this.Message_label = new System.Windows.Forms.Label();
+            this.RGB_flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.Red_radioButton = new System.Windows.Forms.RadioButton();
+            this.Green_radioButton = new System.Windows.Forms.RadioButton();
+            this.Blue_radioButton = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.Main_splitContainer)).BeginInit();
             this.Main_splitContainer.Panel1.SuspendLayout();
             this.Main_splitContainer.Panel2.SuspendLayout();
             this.Main_splitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FilledContainer_pictureBox)).BeginInit();
+            this.RGB_flowLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // Main_splitContainer
@@ -60,6 +65,7 @@ namespace ExtractionApplication
             // 
             // Main_splitContainer.Panel2
             // 
+            this.Main_splitContainer.Panel2.Controls.Add(this.RGB_flowLayoutPanel);
             this.Main_splitContainer.Panel2.Controls.Add(this.ContainerPath_textBox);
             this.Main_splitContainer.Panel2.Controls.Add(this.Message_textBox);
             this.Main_splitContainer.Panel2.Controls.Add(this.ContainerPath_label);
@@ -67,7 +73,7 @@ namespace ExtractionApplication
             this.Main_splitContainer.Panel2.Controls.Add(this.Cancel_button);
             this.Main_splitContainer.Panel2.Controls.Add(this.Message_label);
             this.Main_splitContainer.Size = new System.Drawing.Size(1182, 653);
-            this.Main_splitContainer.SplitterDistance = 425;
+            this.Main_splitContainer.SplitterDistance = 428;
             this.Main_splitContainer.SplitterWidth = 1;
             this.Main_splitContainer.TabIndex = 0;
             // 
@@ -76,7 +82,7 @@ namespace ExtractionApplication
             this.FilledContainer_pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FilledContainer_pictureBox.Location = new System.Drawing.Point(0, 0);
             this.FilledContainer_pictureBox.Name = "FilledContainer_pictureBox";
-            this.FilledContainer_pictureBox.Size = new System.Drawing.Size(1180, 423);
+            this.FilledContainer_pictureBox.Size = new System.Drawing.Size(1180, 426);
             this.FilledContainer_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.FilledContainer_pictureBox.TabIndex = 0;
             this.FilledContainer_pictureBox.TabStop = false;
@@ -145,6 +151,51 @@ namespace ExtractionApplication
             this.Message_label.TabIndex = 11;
             this.Message_label.Text = "Сообщение в контейнере";
             // 
+            // RGB_flowLayoutPanel
+            // 
+            this.RGB_flowLayoutPanel.AutoSize = true;
+            this.RGB_flowLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.RGB_flowLayoutPanel.Controls.Add(this.Red_radioButton);
+            this.RGB_flowLayoutPanel.Controls.Add(this.Green_radioButton);
+            this.RGB_flowLayoutPanel.Controls.Add(this.Blue_radioButton);
+            this.RGB_flowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.RGB_flowLayoutPanel.Location = new System.Drawing.Point(87, 131);
+            this.RGB_flowLayoutPanel.Name = "RGB_flowLayoutPanel";
+            this.RGB_flowLayoutPanel.Size = new System.Drawing.Size(49, 83);
+            this.RGB_flowLayoutPanel.TabIndex = 1;
+            // 
+            // Red_radioButton
+            // 
+            this.Red_radioButton.AutoSize = true;
+            this.Red_radioButton.Checked = true;
+            this.Red_radioButton.Location = new System.Drawing.Point(3, 3);
+            this.Red_radioButton.Name = "Red_radioButton";
+            this.Red_radioButton.Size = new System.Drawing.Size(39, 21);
+            this.Red_radioButton.TabIndex = 0;
+            this.Red_radioButton.TabStop = true;
+            this.Red_radioButton.Text = "R";
+            this.Red_radioButton.UseVisualStyleBackColor = true;
+            // 
+            // Green_radioButton
+            // 
+            this.Green_radioButton.AutoSize = true;
+            this.Green_radioButton.Location = new System.Drawing.Point(3, 30);
+            this.Green_radioButton.Name = "Green_radioButton";
+            this.Green_radioButton.Size = new System.Drawing.Size(40, 21);
+            this.Green_radioButton.TabIndex = 1;
+            this.Green_radioButton.Text = "G";
+            this.Green_radioButton.UseVisualStyleBackColor = true;
+            // 
+            // Blue_radioButton
+            // 
+            this.Blue_radioButton.AutoSize = true;
+            this.Blue_radioButton.Location = new System.Drawing.Point(3, 57);
+            this.Blue_radioButton.Name = "Blue_radioButton";
+            this.Blue_radioButton.Size = new System.Drawing.Size(38, 21);
+            this.Blue_radioButton.TabIndex = 2;
+            this.Blue_radioButton.Text = "B";
+            this.Blue_radioButton.UseVisualStyleBackColor = true;
+            // 
             // ExtractionMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -159,6 +210,8 @@ namespace ExtractionApplication
             ((System.ComponentModel.ISupportInitialize)(this.Main_splitContainer)).EndInit();
             this.Main_splitContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.FilledContainer_pictureBox)).EndInit();
+            this.RGB_flowLayoutPanel.ResumeLayout(false);
+            this.RGB_flowLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -173,6 +226,10 @@ namespace ExtractionApplication
         private System.Windows.Forms.Button ExtractMessage_button;
         private System.Windows.Forms.Button Cancel_button;
         private System.Windows.Forms.Label Message_label;
+        private System.Windows.Forms.FlowLayoutPanel RGB_flowLayoutPanel;
+        private System.Windows.Forms.RadioButton Red_radioButton;
+        private System.Windows.Forms.RadioButton Green_radioButton;
+        private System.Windows.Forms.RadioButton Blue_radioButton;
     }
 }
 

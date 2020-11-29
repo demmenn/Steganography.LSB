@@ -77,7 +77,8 @@ namespace EmbedApplication
         {
             string message = Message_textBox.Text;
             Image container = Container_pictureBox.Image;
-            Image filledContainer = Embedding.EmbedMessageInImage(message, container);
+            Channel ch = Red_radioButton.Checked ? Channel.R : Green_radioButton.Checked ? Channel.G : Channel.B;
+            Image filledContainer = Embedding.EmbedMessageInImage(message, container, ch);
             FilledContainer_pictureBox.Image = filledContainer;
             SaveFillContainer_button.Enabled = true;
         }

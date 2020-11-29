@@ -18,7 +18,7 @@ namespace Steganography.Service
 
         public static bool CheckSize(Int32 size, Bitmap bm)
         {
-            int bmSize = (sizeof(Int32) * 8) + (bm.Width * bm.Height);
+            int bmSize = INT_SIZE_IN_BIT + (bm.Width * bm.Height);
             return size <= bmSize;
         }
 

@@ -5,10 +5,18 @@ using System.Text;
 
 namespace Steganography.Service
 {
+
+    public enum Channel
+    {
+        R = 0,
+        G,
+        B
+    }
+
     public static class Embedding
     {
 
-        public static Image EmbedMessageInImage(string message, Image container)
+        public static Image EmbedMessageInImage(string message, Image container, Channel channel)
         {
             Image result = null;
             if (!String.IsNullOrEmpty(message))
@@ -17,44 +25,14 @@ namespace Steganography.Service
                 Int32 messageSizeInBit = Utils.GetMessageSizeInBit(message);
                 if (Utils.CheckSize(messageSizeInBit, temp))
                 {
-                    WriteMessage(temp, message, messageSizeInBit);
+                    WriteMessage(temp, message, messageSizeInBit, channel);
                     result = temp;
                 }
             }
             return result;
         }
 
-        private static void WriteSizeOfMessage(Bitmap bm, Int32 size)
-        {
-            BitArray bitArr = new BitArray(BitConverter.GetBytes(size));
-            string bytes = bitArr.ToBitStr().Reverse();
-            int bitIndex = 0;
-            for (int i = 0; i < bm.Width; i++)
-            {
-                for (int j = 0; j < bm.Height; j++)
-                {
-                    if (bitIndex < bytes.Length)
-                    {
-                        Color pixelColor = bm.GetPixel(i, j);
-                        byte R = pixelColor.R;
-                        bool lessBit = R.GetBit(0);
-                        if (Convert.ToBoolean(Convert.ToInt32(bytes[bitIndex].ToString())) != lessBit)
-                        {
-                            byte newR = lessBit ? (byte)(R - 1) : (byte)(R + 1);
-                            Color newPixelColor = Color.FromArgb(newR, pixelColor.G, pixelColor.B);
-                            bm.SetPixel(i, j, newPixelColor);
-                        }
-                        bitIndex++;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-            }
-        }
-
-        private static void WriteMessage(Bitmap bm, string message, Int32 msgSize)
+        private static void WriteMessage(Bitmap bm, string message, Int32 msgSize, Channel channel)
         {
             int bitIndex = 0;
             BitArray msg = Utils.GetResultBitArray(message, msgSize);
@@ -65,12 +43,18 @@ namespace Steganography.Service
                     if (bitIndex < msg.Length)
                     {
                         Color pixelColor = bm.GetPixel(i, j);
-                        byte R = pixelColor.R;
-                        bool lessBit = R.GetBit(0);
+                        byte channelByte = channel == Channel.R ? pixelColor.R : channel == Channel.G ? pixelColor.G : pixelColor.B;
+                        bool lessBit = channelByte.GetBit(0);
                         if (msg[bitIndex] != lessBit)
                         {
-                            byte newR = lessBit ? (byte)(R - 1) : (byte)(R + 1);
-                            Color newPixelColor = Color.FromArgb(newR, pixelColor.G, pixelColor.B);
+                            byte newChannelByte = lessBit ? (byte)(channelByte - 1) : (byte)(channelByte + 1);
+                            Color newPixelColor;
+                            if (channel == Channel.R)
+                                newPixelColor = Color.FromArgb(newChannelByte, pixelColor.G, pixelColor.B);
+                            else if (channel == Channel.G)
+                                newPixelColor = Color.FromArgb(pixelColor.R, newChannelByte, pixelColor.B);
+                            else
+                                newPixelColor = Color.FromArgb(pixelColor.R, pixelColor.G, newChannelByte);
                             bm.SetPixel(i, j, newPixelColor);
                         }
                         bitIndex++;

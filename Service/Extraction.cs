@@ -8,18 +8,18 @@ namespace Steganography.Service
     public static class Extraction
     {
 
-        public static string ExtractMessage(Image source)
+        public static string ExtractMessage(Image source, Channel channel)
         {
             string result = null;
             if (source != null)
             {
                 Bitmap temp = new Bitmap(source);
-                result = GetMessage(temp);
+                result = GetMessage(temp, channel);
             }
             return result;
         }
 
-        private static string GetMessage(Bitmap bm)
+        private static string GetMessage(Bitmap bm, Channel channel)
         {
             int i = 0, j = 0, msgSize = 0, sizeBitIndex = 0, msgBitIndex = 0;
             string result = null;
@@ -29,8 +29,8 @@ namespace Steganography.Service
                 for (; j < bm.Height; j++)
                 {
                     Color pixelColor = bm.GetPixel(i, j);
-                    byte R = pixelColor.R;
-                    bool lessBit = R.GetBit(0);
+                    byte channelByte = channel == Channel.R ? pixelColor.R : channel == Channel.G ? pixelColor.G : pixelColor.B;
+                    bool lessBit = channelByte.GetBit(0);
                     if (sizeBitIndex < Utils.INT_SIZE_IN_BIT)
                     {
                         sizeArr[sizeBitIndex] = lessBit;
@@ -49,23 +49,26 @@ namespace Steganography.Service
                     break;
                 }
             }
-            BitArray msgArr = new BitArray(msgSize);
-            for (; i < bm.Width; i++)
+            if (msgSize > 0)
             {
-                for (; j < bm.Height; j++)
+                BitArray msgArr = new BitArray(msgSize);
+                for (; i < bm.Width; i++)
                 {
-                    Color pixelColor = bm.GetPixel(i, j);
-                    byte R = pixelColor.R;
-                    bool lessBit = R.GetBit(0);
-                    if (msgBitIndex < msgSize)
+                    for (; j < bm.Height; j++)
                     {
-                        msgArr[msgBitIndex] = lessBit;
-                        msgBitIndex++;
-                    }
-                    else
-                    {
-                        result = msgArr.ToUTF8Str();
-                        return result;
+                        Color pixelColor = bm.GetPixel(i, j);
+                        byte channelByte = channel == Channel.R ? pixelColor.R : channel == Channel.G ? pixelColor.G : pixelColor.B;
+                        bool lessBit = channelByte.GetBit(0);
+                        if (msgBitIndex < msgSize)
+                        {
+                            msgArr[msgBitIndex] = lessBit;
+                            msgBitIndex++;
+                        }
+                        else
+                        {
+                            result = msgArr.ToUTF8Str();
+                            return result;
+                        }
                     }
                 }
             }

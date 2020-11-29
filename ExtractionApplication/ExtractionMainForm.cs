@@ -51,7 +51,8 @@ namespace ExtractionApplication
         private void ExtractMessage_button_Click(object sender, EventArgs e)
         {
             Image image = FilledContainer_pictureBox.Image;
-            string message = Extraction.ExtractMessage(image);
+            Channel ch = Red_radioButton.Checked ? Channel.R : Green_radioButton.Checked ? Channel.G : Channel.B;
+            string message = Extraction.ExtractMessage(image, ch);
             Message_textBox.Text = message;
         }
 
