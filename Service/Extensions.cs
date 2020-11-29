@@ -54,6 +54,5 @@ namespace Steganography.Service
             }
             return encoding.GetString(strArr);
         }
-
     }
 }

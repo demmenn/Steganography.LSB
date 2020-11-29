@@ -17,8 +17,7 @@ namespace Steganography.Service
                 Int32 messageSizeInBit = Utils.GetMessageSizeInBit(message);
                 if (Utils.CheckSize(messageSizeInBit, temp))
                 {
-                    WriteSizeOfMessage(temp, messageSizeInBit);
-                    WriteMessage(temp, message);
+                    WriteMessage(temp, message, messageSizeInBit);
                     result = temp;
                 }
             }
@@ -55,31 +54,22 @@ namespace Steganography.Service
             }
         }
 
-        private static void WriteMessage(Bitmap bm, string message)
+        private static void WriteMessage(Bitmap bm, string message, Int32 msgSize)
         {
-            BitArray bitArr = new BitArray(Encoding.UTF8.GetBytes(message));
-            string bytes = bitArr.ToBitStr();
             int bitIndex = 0;
+            BitArray msg = Utils.GetResultBitArray(message, msgSize);
             for (int i = 0; i < bm.Width; i++)
             {
-                for (int j = 32; j < bm.Height; j++)
+                for (int j = 0; j < bm.Height; j++)
                 {
-                    if (bitIndex < bitArr.Length)
+                    if (bitIndex < msg.Length)
                     {
                         Color pixelColor = bm.GetPixel(i, j);
                         byte R = pixelColor.R;
                         bool lessBit = R.GetBit(0);
-                        if (Convert.ToBoolean(Convert.ToInt32(bytes[bitIndex].ToString())) != lessBit)
+                        if (msg[bitIndex] != lessBit)
                         {
-                            byte newR;
-                            if (lessBit)
-                            {
-                                newR = (byte)(R - 1);
-                            }
-                            else
-                            {
-                                newR = (byte)(R + 1);
-                            }
+                            byte newR = lessBit ? (byte)(R - 1) : (byte)(R + 1);
                             Color newPixelColor = Color.FromArgb(newR, pixelColor.G, pixelColor.B);
                             bm.SetPixel(i, j, newPixelColor);
                         }

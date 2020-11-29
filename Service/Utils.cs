@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 
 namespace Steganography.Service
 {
     public static class Utils
     {
+
+        public const int INT_SIZE_IN_BIT = sizeof(Int32) * 8; 
+
         public static Int32 GetMessageSizeInBit(string message)
         {
             BitArray bitArr = new BitArray(Encoding.UTF8.GetBytes(message));
@@ -20,33 +22,19 @@ namespace Steganography.Service
             return size <= bmSize;
         }
 
-        public static Int32 GetMessageSizeFromBitmap(Bitmap bm)
+        public static BitArray GetResultBitArray(string message, Int32 msgSize)
         {
-            Int32 result = 0;
-            BitArray bitArr = new BitArray(32);
-            int bitIndex = 0;
-            for (int i = 0; i < bm.Width; i++)
+            int size = GetMessageSizeInBit(message) + INT_SIZE_IN_BIT;
+            BitArray result = new BitArray(size);
+            BitArray sizeBitArr = new BitArray(BitConverter.GetBytes(msgSize));
+            BitArray msgBitArr = new BitArray(Encoding.UTF8.GetBytes(message));
+            string resultBitStr = sizeBitArr.ToBitStr() + msgBitArr.ToBitStr();
+
+            for (int i = 0; i < size; i++)
             {
-                for (int j = 0; j < bm.Height; j++)
-                {
-                    if (bitIndex < bitArr.Length)
-                    {
-                        Color pixelColor = bm.GetPixel(i, j);
-                        byte R = pixelColor.R;
-                        bool lessBit = R.GetBit(0);
-                        bitArr[bitIndex] = lessBit;
-                        bitIndex++;
-                    }
-                    else
-                    {
-                        string temp = bitArr.ToBitStr();
-                        temp = temp.Reverse();
-                        bitArr = new BitArray(temp.Select(c => c == '1').ToArray());
-                        result = bitArr.ToInt32();
-                        return result;
-                    }
-                }
+                result[i] = Convert.ToBoolean(Convert.ToInt32(resultBitStr[i].ToString()));
             }
+
             return result;
         }
 
