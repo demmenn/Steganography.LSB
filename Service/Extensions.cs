@@ -6,6 +6,12 @@ namespace Steganography.Service
 {
     public static class Extensions
     {
+
+        public static bool CheckImageExtension(this string fileName)
+        {
+            return (fileName.EndsWith(".png") || fileName.EndsWith(".jpg") || fileName.EndsWith(".jpeg") || fileName.EndsWith(".bmp"));
+        }
+
         public static string ToBitStr(this BitArray bits)
         {
             var sb = new StringBuilder();
@@ -38,7 +44,6 @@ namespace Steganography.Service
             int[] array = new int[1];
             bitArray.CopyTo(array, 0);
             return array[0];
-
         }
 
         public static String ToUTF8Str(this BitArray ba)

@@ -1,30 +1,55 @@
 ﻿using System;
 using System.Collections;
 using System.Drawing;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace Steganography.Service
 {
+
+    public enum Method
+    {
+        Simple = 0,
+        BitsSkipping,
+        RandBitsSkipping
+    }
+
+    public enum Channel
+    {
+        R = 2,
+        G = 3,
+        B = 1
+    }
+
     public static class Utils
     {
 
-        public const int INT_SIZE_IN_BIT = sizeof(Int32) * 8; 
+        public const int INT_SIZE_IN_BIT = sizeof(int) * 8; 
 
-        public static Int32 GetMessageSizeInBit(string message)
+        public static int GetMessageSizeInBit(string message)
         {
             BitArray bitArr = new BitArray(Encoding.UTF8.GetBytes(message));
             return bitArr.Length;
         }
 
-        public static bool CheckSize(Int32 size, Bitmap bm, int number)
+        public static string GetAppFolder()
         {
-            if (number == 0) number += 1;
-            int bmSize = INT_SIZE_IN_BIT + (bm.Width * bm.Height);
-            size *= number;
+            return new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
+        }
+
+        public static bool CheckSize(int size, Bitmap bm, int number)
+        {
+            if (number == -1)
+            {
+                number = 1;
+            }
+            int bmSize = bm.Width * bm.Height;
+            size = (INT_SIZE_IN_BIT + size) * number;
             return size <= bmSize;
         }
 
-        public static BitArray CreateResultBitArray(string message, Int32 msgSize)
+        public static BitArray CreateResultBitArray(string message, int msgSize)
         {
             int size = GetMessageSizeInBit(message) + INT_SIZE_IN_BIT;
             BitArray result = new BitArray(size);

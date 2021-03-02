@@ -8,32 +8,137 @@ namespace Steganography.Service
     public static class Extraction
     {
 
-        public static string ExtractMessage(Image source, Channel channel, Int32 number)
+        public static string ExtractMessageFromImage(Image source, Channel channel, int number = -1)
         {
             string result = null;
             if (source != null)
             {
                 Bitmap temp = new Bitmap(source);
-                result = GetMessage(temp, channel, number);
+                result = ReadMessage(temp, channel, number);
             }
             return result;
         }
 
-        private static string GetMessage(Bitmap bm, Channel channel, Int32 number)
+        public static string ExtractMessageFromImage(Image source, int beginNumber, int endNumber)
         {
-            if (number == 0)
-                number += 1;
-            int i = 0, j = 0, msgSize = 0, sizeBitIndex = 0, msgBitIndex = 0;
-            int j_numb = 0;
             string result = null;
+            if (source != null)
+            {
+                Bitmap temp = new Bitmap(source);
+                result = ReadMessage(temp, beginNumber, endNumber);
+            }
+            return result;
+        }
+
+        private static int GetMessageSize(Bitmap bitmap, Channel channel, int beginNumber)
+        {
+            int result = 0;
+            int j_numb = 0, j = 0, i = 0, sizeBitIndex = 0;
             bool isSizeReading = false;
             BitArray sizeArr = new BitArray(Utils.INT_SIZE_IN_BIT);
-            for (; i < bm.Width; i++)
+
+            for (; i < bitmap.Width; i++)
             {
                 j = j_numb;
-                for (; j < bm.Height; j += number)
+                for (; j < bitmap.Height; j += beginNumber)
                 {
-                    Color pixelColor = bm.GetPixel(i, j);
+                    Color pixelColor = bitmap.GetPixel(i, j);
+                    byte channelByte = channel == Channel.R ? pixelColor.R : channel == Channel.G ? pixelColor.G : pixelColor.B;
+                    bool lessBit = channelByte.GetBit(0);
+                    if (sizeBitIndex < Utils.INT_SIZE_IN_BIT)
+                    {
+                        sizeArr[sizeBitIndex] = lessBit;
+                        sizeBitIndex++;
+                    }
+                    else if (sizeBitIndex == Utils.INT_SIZE_IN_BIT)
+                    {
+                        string temp = sizeArr.ToBitStr();
+                        sizeArr = new BitArray(temp.Select(c => c == '1').ToArray());
+                        result = sizeArr.ToInt32();
+                        isSizeReading = true;
+                        j_numb = j;
+                        break;
+                    }
+
+                    if (beginNumber > 1 && (j + beginNumber) >= bitmap.Height)
+                    {
+                        j_numb = (j + beginNumber) - bitmap.Height;
+                        break;
+                    }
+
+                }
+                if (sizeBitIndex == Utils.INT_SIZE_IN_BIT && isSizeReading)
+                {
+                    break;
+                }
+            }
+            return result;
+        }
+
+        private static string ReadMessage(Bitmap bitmap, Channel channel, int number)
+        {
+
+            if (number == -1)
+            {
+                number = 1;
+            }
+
+            int i = 0, msgBitIndex = 0;
+            int j_numb = 0;
+            string result = null;
+
+            int msgSize = GetMessageSize(bitmap, channel, number);
+
+            if (msgSize > 0)
+            {
+                BitArray msgArr = new BitArray(msgSize);
+                for (; i < bitmap.Width; i++)
+                {
+                    int j = j_numb;
+                    for (; j < bitmap.Height; j += number)
+                    {
+                        Color pixelColor = bitmap.GetPixel(i, j);
+                        byte channelByte = channel == Channel.R ? pixelColor.R : channel == Channel.G ? pixelColor.G : pixelColor.B;
+                        bool lessBit = channelByte.GetBit(0);
+                        if (msgBitIndex < msgSize)
+                        {
+                            msgArr[msgBitIndex] = lessBit;
+                            msgBitIndex++;
+                        }
+                        else
+                        {
+                            result = msgArr.ToUTF8Str();
+                            return result;
+                        }
+
+                        if (number > 1 && (j + number) >= bitmap.Height)
+                        {
+                            j_numb = (j + number) - bitmap.Height;
+                            break;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        private static string ReadMessage(Bitmap bitmap, int beginNumber, int endNumber)
+        {
+            Random rand = new Random((beginNumber * endNumber) - endNumber);
+            Channel channel = (Channel)rand.Next(1, 4);
+            int inc = rand.Next(beginNumber, endNumber);
+            int i = 0, msgBitIndex = 0, sizeBitIndex = 0, j_numb = 0, msgSize = 0;
+            string result = null;
+
+            bool isSizeReading = false;
+            BitArray sizeArr = new BitArray(Utils.INT_SIZE_IN_BIT);
+
+            for (; i < bitmap.Width; i++)
+            {
+                int j = j_numb;
+                for (; j < bitmap.Height; j += inc)
+                {
+                    Color pixelColor = bitmap.GetPixel(i, j);
                     byte channelByte = channel == Channel.R ? pixelColor.R : channel == Channel.G ? pixelColor.G : pixelColor.B;
                     bool lessBit = channelByte.GetBit(0);
                     if (sizeBitIndex < Utils.INT_SIZE_IN_BIT)
@@ -51,11 +156,13 @@ namespace Steganography.Service
                         break;
                     }
 
-                    if ((j + number) >= bm.Height)
+                    if (inc > 1 && (j + inc) >= bitmap.Height)
                     {
-                        j_numb = (j + number) - bm.Height;
+                        j_numb = (j + inc) - bitmap.Height;
                         break;
                     }
+
+                    inc = rand.Next(beginNumber, endNumber);
                 }
                 if (sizeBitIndex == Utils.INT_SIZE_IN_BIT && isSizeReading)
                 {
@@ -65,12 +172,12 @@ namespace Steganography.Service
             if (msgSize > 0)
             {
                 BitArray msgArr = new BitArray(msgSize);
-                for (; i < bm.Width; i++)
+                for (; i < bitmap.Width; i++)
                 {
-                    j = j_numb;
-                    for (; j < bm.Height; j += number)
+                    int j = j_numb;
+                    for (; j < bitmap.Height; j += inc)
                     {
-                        Color pixelColor = bm.GetPixel(i, j);
+                        Color pixelColor = bitmap.GetPixel(i, j);
                         byte channelByte = channel == Channel.R ? pixelColor.R : channel == Channel.G ? pixelColor.G : pixelColor.B;
                         bool lessBit = channelByte.GetBit(0);
                         if (msgBitIndex < msgSize)
@@ -84,11 +191,12 @@ namespace Steganography.Service
                             return result;
                         }
 
-                        if ((j + number) >= bm.Height)
+                        if (inc > 1 && (j + inc) >= bitmap.Height)
                         {
-                            j_numb = (j + number) - bm.Height;
+                            j_numb = (j + inc) - bitmap.Height;
                             break;
                         }
+                        inc = rand.Next(beginNumber, endNumber);
                     }
                 }
             }
