@@ -91,7 +91,7 @@ namespace ExtractionApplication
             this.Main_splitContainer.Panel2.Controls.Add(this.Cancel_button);
             this.Main_splitContainer.Panel2.Controls.Add(this.Message_label);
             this.Main_splitContainer.Size = new System.Drawing.Size(1371, 770);
-            this.Main_splitContainer.SplitterDistance = 557;
+            this.Main_splitContainer.SplitterDistance = 560;
             this.Main_splitContainer.SplitterWidth = 1;
             this.Main_splitContainer.TabIndex = 0;
             // 
@@ -100,7 +100,7 @@ namespace ExtractionApplication
             this.FilledContainer_pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FilledContainer_pictureBox.Location = new System.Drawing.Point(0, 0);
             this.FilledContainer_pictureBox.Name = "FilledContainer_pictureBox";
-            this.FilledContainer_pictureBox.Size = new System.Drawing.Size(1369, 555);
+            this.FilledContainer_pictureBox.Size = new System.Drawing.Size(1369, 558);
             this.FilledContainer_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.FilledContainer_pictureBox.TabIndex = 0;
             this.FilledContainer_pictureBox.TabStop = false;
@@ -273,7 +273,7 @@ namespace ExtractionApplication
             this.Message_textBox.Multiline = true;
             this.Message_textBox.Name = "Message_textBox";
             this.Message_textBox.ReadOnly = true;
-            this.Message_textBox.Size = new System.Drawing.Size(637, 141);
+            this.Message_textBox.Size = new System.Drawing.Size(637, 128);
             this.Message_textBox.TabIndex = 12;
             // 
             // ContainerPath_label
@@ -328,7 +328,7 @@ namespace ExtractionApplication
             this.Controls.Add(this.Main_splitContainer);
             this.Name = "ExtractionMainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Извлечение сообщения";
             this.Main_splitContainer.Panel1.ResumeLayout(false);
             this.Main_splitContainer.Panel2.ResumeLayout(false);
             this.Main_splitContainer.Panel2.PerformLayout();
