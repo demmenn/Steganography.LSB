@@ -30,6 +30,97 @@ namespace Steganography.Service
             return result;
         }
 
+        public static string ExtractMessageFromImage(Image source, Channel channel, int blockWidth, int blockHeight)
+        {
+            string result = null;
+            if (source != null)
+            {
+                Bitmap temp = new Bitmap(source);
+                result = ReadMessage(temp, channel, blockWidth, blockHeight);
+            }
+            return result;
+        }
+
+        private static string ReadMessage(Bitmap bitmap, Channel channel, int blockWidth, int blockHeight)
+        {
+            int i = 0, j = 0, msgBitIndex = 0, sizeBitIndex = 0, msgSize = 0;
+            string result = null;
+
+            bool isSizeReading = false;
+            BitArray sizeArr = new BitArray(Utils.INT_SIZE_IN_BIT);
+
+            for (; i < bitmap.Width; i += blockWidth)
+            {
+                if (i + blockWidth > bitmap.Width)
+                {
+                    break;
+                }
+
+                for (; j < bitmap.Height; j += blockHeight)
+                {
+                    if (j + blockHeight > bitmap.Height)
+                    {
+                        j = 0;
+                        break;
+                    }
+
+                    bool xorBit = bitmap.GetBlockXOR(i, j, blockWidth, blockHeight, channel);
+                    if (sizeBitIndex < Utils.INT_SIZE_IN_BIT)
+                    {
+                        sizeArr[sizeBitIndex] = xorBit;
+                        sizeBitIndex++;
+                    }
+                    else if (sizeBitIndex == Utils.INT_SIZE_IN_BIT)
+                    {
+                        string temp = sizeArr.ToBitStr();
+                        sizeArr = new BitArray(temp.Select(c => c == '1').ToArray());
+                        msgSize = sizeArr.ToInt32();
+                        isSizeReading = true;
+                        break;
+                    }
+                }
+
+                if (sizeBitIndex == Utils.INT_SIZE_IN_BIT && isSizeReading)
+                {
+                    break;
+                }
+            }
+            if (msgSize > 0)
+            {
+                BitArray msgArr = new BitArray(msgSize);
+                for (; i < bitmap.Width; i += blockWidth)
+                {
+                    if (i + blockWidth > bitmap.Width)
+                    {
+                        break;
+                    }
+
+                    for (; j < bitmap.Height; j += blockHeight)
+                    {
+                        if (j + blockHeight > bitmap.Height)
+                        {
+                            j = 0;
+                            break;
+                        }
+
+                        bool xorBit = bitmap.GetBlockXOR(i, j, blockWidth, blockHeight, channel);
+                        if (msgBitIndex < msgSize)
+                        {
+                            msgArr[msgBitIndex] = xorBit;
+                            msgBitIndex++;
+                        }
+                        else
+                        {
+                            result = msgArr.ToUTF8Str();
+                            return result;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         private static int GetMessageSize(Bitmap bitmap, Channel channel, int beginNumber)
         {
             int result = 0;

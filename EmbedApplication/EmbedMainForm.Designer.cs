@@ -33,10 +33,8 @@ namespace EmbedApplication
             this.Containers_splitContainer = new System.Windows.Forms.SplitContainer();
             this.Container_pictureBox = new System.Windows.Forms.PictureBox();
             this.FilledContainer_pictureBox = new System.Windows.Forms.PictureBox();
-            this.Methods_flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.SimpleMethod_radioButton = new System.Windows.Forms.RadioButton();
-            this.BitsSkippingMethod_radioButton = new System.Windows.Forms.RadioButton();
-            this.BitsRandSkippingMethod_radioButton = new System.Windows.Forms.RadioButton();
+            this.MethodInfo_label = new System.Windows.Forms.Label();
+            this.ChoosedMethod_comboBox = new System.Windows.Forms.ComboBox();
             this.EndNumber_nud = new System.Windows.Forms.NumericUpDown();
             this.InfoEndNumber_label = new System.Windows.Forms.Label();
             this.BeginNumber_nud = new System.Windows.Forms.NumericUpDown();
@@ -53,6 +51,7 @@ namespace EmbedApplication
             this.Red_radioButton = new System.Windows.Forms.RadioButton();
             this.Green_radioButton = new System.Windows.Forms.RadioButton();
             this.Blue_radioButton = new System.Windows.Forms.RadioButton();
+            this.ChooseContainer_button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Main_splitContainer)).BeginInit();
             this.Main_splitContainer.Panel1.SuspendLayout();
             this.Main_splitContainer.Panel2.SuspendLayout();
@@ -63,7 +62,6 @@ namespace EmbedApplication
             this.Containers_splitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Container_pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FilledContainer_pictureBox)).BeginInit();
-            this.Methods_flowLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EndNumber_nud)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BeginNumber_nud)).BeginInit();
             this.RGB_flowLayoutPanel.SuspendLayout();
@@ -85,7 +83,9 @@ namespace EmbedApplication
             // 
             // Main_splitContainer.Panel2
             // 
-            this.Main_splitContainer.Panel2.Controls.Add(this.Methods_flowLayoutPanel);
+            this.Main_splitContainer.Panel2.Controls.Add(this.ChooseContainer_button);
+            this.Main_splitContainer.Panel2.Controls.Add(this.MethodInfo_label);
+            this.Main_splitContainer.Panel2.Controls.Add(this.ChoosedMethod_comboBox);
             this.Main_splitContainer.Panel2.Controls.Add(this.EndNumber_nud);
             this.Main_splitContainer.Panel2.Controls.Add(this.InfoEndNumber_label);
             this.Main_splitContainer.Panel2.Controls.Add(this.BeginNumber_nud);
@@ -146,61 +146,36 @@ namespace EmbedApplication
             this.FilledContainer_pictureBox.TabIndex = 0;
             this.FilledContainer_pictureBox.TabStop = false;
             // 
-            // Methods_flowLayoutPanel
+            // MethodInfo_label
             // 
-            this.Methods_flowLayoutPanel.AutoSize = true;
-            this.Methods_flowLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Methods_flowLayoutPanel.Controls.Add(this.SimpleMethod_radioButton);
-            this.Methods_flowLayoutPanel.Controls.Add(this.BitsSkippingMethod_radioButton);
-            this.Methods_flowLayoutPanel.Controls.Add(this.BitsRandSkippingMethod_radioButton);
-            this.Methods_flowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.Methods_flowLayoutPanel.Location = new System.Drawing.Point(667, 122);
-            this.Methods_flowLayoutPanel.Name = "Methods_flowLayoutPanel";
-            this.Methods_flowLayoutPanel.Size = new System.Drawing.Size(413, 92);
-            this.Methods_flowLayoutPanel.TabIndex = 16;
+            this.MethodInfo_label.AutoSize = true;
+            this.MethodInfo_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MethodInfo_label.Location = new System.Drawing.Point(667, 10);
+            this.MethodInfo_label.Name = "MethodInfo_label";
+            this.MethodInfo_label.Size = new System.Drawing.Size(80, 25);
+            this.MethodInfo_label.TabIndex = 18;
+            this.MethodInfo_label.Text = "Метод:";
             // 
-            // SimpleMethod_radioButton
+            // ChoosedMethod_comboBox
             // 
-            this.SimpleMethod_radioButton.AutoSize = true;
-            this.SimpleMethod_radioButton.Checked = true;
-            this.SimpleMethod_radioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SimpleMethod_radioButton.Location = new System.Drawing.Point(3, 3);
-            this.SimpleMethod_radioButton.Name = "SimpleMethod_radioButton";
-            this.SimpleMethod_radioButton.Size = new System.Drawing.Size(195, 24);
-            this.SimpleMethod_radioButton.TabIndex = 0;
-            this.SimpleMethod_radioButton.TabStop = true;
-            this.SimpleMethod_radioButton.Text = "Простейший метод";
-            this.SimpleMethod_radioButton.UseVisualStyleBackColor = true;
-            this.SimpleMethod_radioButton.CheckedChanged += new System.EventHandler(this.MethodChanged);
-            // 
-            // BitsSkippingMethod_radioButton
-            // 
-            this.BitsSkippingMethod_radioButton.AutoSize = true;
-            this.BitsSkippingMethod_radioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BitsSkippingMethod_radioButton.Location = new System.Drawing.Point(3, 33);
-            this.BitsSkippingMethod_radioButton.Name = "BitsSkippingMethod_radioButton";
-            this.BitsSkippingMethod_radioButton.Size = new System.Drawing.Size(248, 24);
-            this.BitsSkippingMethod_radioButton.TabIndex = 1;
-            this.BitsSkippingMethod_radioButton.Text = "Метод с пропуском битов";
-            this.BitsSkippingMethod_radioButton.UseVisualStyleBackColor = true;
-            this.BitsSkippingMethod_radioButton.CheckedChanged += new System.EventHandler(this.MethodChanged);
-            // 
-            // BitsRandSkippingMethod_radioButton
-            // 
-            this.BitsRandSkippingMethod_radioButton.AutoSize = true;
-            this.BitsRandSkippingMethod_radioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BitsRandSkippingMethod_radioButton.Location = new System.Drawing.Point(3, 63);
-            this.BitsRandSkippingMethod_radioButton.Name = "BitsRandSkippingMethod_radioButton";
-            this.BitsRandSkippingMethod_radioButton.Size = new System.Drawing.Size(405, 24);
-            this.BitsRandSkippingMethod_radioButton.TabIndex = 2;
-            this.BitsRandSkippingMethod_radioButton.Text = "Метод с псевдослучайным пропуском битов";
-            this.BitsRandSkippingMethod_radioButton.UseVisualStyleBackColor = true;
-            this.BitsRandSkippingMethod_radioButton.CheckedChanged += new System.EventHandler(this.MethodChanged);
+            this.ChoosedMethod_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ChoosedMethod_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ChoosedMethod_comboBox.FormattingEnabled = true;
+            this.ChoosedMethod_comboBox.Items.AddRange(new object[] {
+            "Простейший метод",
+            "Метод с пропуском битов",
+            "Метод со случ. пропуском битов",
+            "Блочный метод"});
+            this.ChoosedMethod_comboBox.Location = new System.Drawing.Point(753, 7);
+            this.ChoosedMethod_comboBox.Name = "ChoosedMethod_comboBox";
+            this.ChoosedMethod_comboBox.Size = new System.Drawing.Size(332, 33);
+            this.ChoosedMethod_comboBox.TabIndex = 17;
+            this.ChoosedMethod_comboBox.SelectedIndexChanged += new System.EventHandler(this.MethodChanged);
             // 
             // EndNumber_nud
             // 
             this.EndNumber_nud.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.EndNumber_nud.Location = new System.Drawing.Point(905, 84);
+            this.EndNumber_nud.Location = new System.Drawing.Point(910, 117);
             this.EndNumber_nud.Minimum = new decimal(new int[] {
             1,
             0,
@@ -221,17 +196,17 @@ namespace EmbedApplication
             // 
             this.InfoEndNumber_label.AutoSize = true;
             this.InfoEndNumber_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoEndNumber_label.Location = new System.Drawing.Point(671, 86);
+            this.InfoEndNumber_label.Location = new System.Drawing.Point(758, 119);
             this.InfoEndNumber_label.Name = "InfoEndNumber_label";
-            this.InfoEndNumber_label.Size = new System.Drawing.Size(228, 25);
+            this.InfoEndNumber_label.Size = new System.Drawing.Size(146, 25);
             this.InfoEndNumber_label.TabIndex = 14;
-            this.InfoEndNumber_label.Text = "Макс. число пропусков:";
+            this.InfoEndNumber_label.Text = "Высота блока:";
             this.InfoEndNumber_label.Visible = false;
             // 
             // BeginNumber_nud
             // 
             this.BeginNumber_nud.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BeginNumber_nud.Location = new System.Drawing.Point(905, 48);
+            this.BeginNumber_nud.Location = new System.Drawing.Point(910, 81);
             this.BeginNumber_nud.Minimum = new decimal(new int[] {
             1,
             0,
@@ -252,7 +227,7 @@ namespace EmbedApplication
             // 
             this.ColorChannel_label.AutoSize = true;
             this.ColorChannel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ColorChannel_label.Location = new System.Drawing.Point(868, 13);
+            this.ColorChannel_label.Location = new System.Drawing.Point(869, 50);
             this.ColorChannel_label.Name = "ColorChannel_label";
             this.ColorChannel_label.Size = new System.Drawing.Size(73, 25);
             this.ColorChannel_label.TabIndex = 12;
@@ -262,11 +237,11 @@ namespace EmbedApplication
             // 
             this.InfoBeginNumber_label.AutoSize = true;
             this.InfoBeginNumber_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoBeginNumber_label.Location = new System.Drawing.Point(679, 50);
+            this.InfoBeginNumber_label.Location = new System.Drawing.Point(757, 83);
             this.InfoBeginNumber_label.Name = "InfoBeginNumber_label";
-            this.InfoBeginNumber_label.Size = new System.Drawing.Size(220, 25);
+            this.InfoBeginNumber_label.Size = new System.Drawing.Size(147, 25);
             this.InfoBeginNumber_label.TabIndex = 10;
-            this.InfoBeginNumber_label.Text = "Мин. число пропусков:";
+            this.InfoBeginNumber_label.Text = "Ширина блока:";
             this.InfoBeginNumber_label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.InfoBeginNumber_label.Visible = false;
             // 
@@ -276,9 +251,8 @@ namespace EmbedApplication
             this.ContainerPath_textBox.Location = new System.Drawing.Point(127, 7);
             this.ContainerPath_textBox.Name = "ContainerPath_textBox";
             this.ContainerPath_textBox.ReadOnly = true;
-            this.ContainerPath_textBox.Size = new System.Drawing.Size(735, 30);
+            this.ContainerPath_textBox.Size = new System.Drawing.Size(458, 30);
             this.ContainerPath_textBox.TabIndex = 9;
-            this.ContainerPath_textBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.Container_textBox_MouseDoubleClick);
             // 
             // ContainerPath_label
             // 
@@ -354,7 +328,7 @@ namespace EmbedApplication
             this.RGB_flowLayoutPanel.Controls.Add(this.Red_radioButton);
             this.RGB_flowLayoutPanel.Controls.Add(this.Green_radioButton);
             this.RGB_flowLayoutPanel.Controls.Add(this.Blue_radioButton);
-            this.RGB_flowLayoutPanel.Location = new System.Drawing.Point(943, 13);
+            this.RGB_flowLayoutPanel.Location = new System.Drawing.Point(948, 46);
             this.RGB_flowLayoutPanel.Name = "RGB_flowLayoutPanel";
             this.RGB_flowLayoutPanel.Size = new System.Drawing.Size(137, 29);
             this.RGB_flowLayoutPanel.TabIndex = 0;
@@ -391,6 +365,17 @@ namespace EmbedApplication
             this.Blue_radioButton.Text = "B";
             this.Blue_radioButton.UseVisualStyleBackColor = true;
             // 
+            // ChooseContainer_button
+            // 
+            this.ChooseContainer_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ChooseContainer_button.Location = new System.Drawing.Point(591, 7);
+            this.ChooseContainer_button.Name = "ChooseContainer_button";
+            this.ChooseContainer_button.Size = new System.Drawing.Size(70, 30);
+            this.ChooseContainer_button.TabIndex = 28;
+            this.ChooseContainer_button.Text = "Выбор";
+            this.ChooseContainer_button.UseVisualStyleBackColor = true;
+            this.ChooseContainer_button.Click += new System.EventHandler(this.ChooseContainer_button_Click);
+            // 
             // EmbedMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -415,8 +400,6 @@ namespace EmbedApplication
             this.Containers_splitContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Container_pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FilledContainer_pictureBox)).EndInit();
-            this.Methods_flowLayoutPanel.ResumeLayout(false);
-            this.Methods_flowLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EndNumber_nud)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BeginNumber_nud)).EndInit();
             this.RGB_flowLayoutPanel.ResumeLayout(false);
@@ -447,10 +430,9 @@ namespace EmbedApplication
         private System.Windows.Forms.NumericUpDown BeginNumber_nud;
         private System.Windows.Forms.NumericUpDown EndNumber_nud;
         private System.Windows.Forms.Label InfoEndNumber_label;
-        private System.Windows.Forms.FlowLayoutPanel Methods_flowLayoutPanel;
-        private System.Windows.Forms.RadioButton SimpleMethod_radioButton;
-        private System.Windows.Forms.RadioButton BitsSkippingMethod_radioButton;
-        private System.Windows.Forms.RadioButton BitsRandSkippingMethod_radioButton;
+        private System.Windows.Forms.ComboBox ChoosedMethod_comboBox;
+        private System.Windows.Forms.Label MethodInfo_label;
+        private System.Windows.Forms.Button ChooseContainer_button;
     }
 }
 

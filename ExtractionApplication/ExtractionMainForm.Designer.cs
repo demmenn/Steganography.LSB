@@ -31,16 +31,9 @@ namespace ExtractionApplication
         {
             this.Main_splitContainer = new System.Windows.Forms.SplitContainer();
             this.FilledContainer_pictureBox = new System.Windows.Forms.PictureBox();
-            this.ContainerPath_textBox = new System.Windows.Forms.TextBox();
-            this.Message_textBox = new System.Windows.Forms.TextBox();
-            this.ContainerPath_label = new System.Windows.Forms.Label();
-            this.ExtractMessage_button = new System.Windows.Forms.Button();
-            this.Cancel_button = new System.Windows.Forms.Button();
-            this.Message_label = new System.Windows.Forms.Label();
-            this.Methods_flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.SimpleMethod_radioButton = new System.Windows.Forms.RadioButton();
-            this.BitsSkippingMethod_radioButton = new System.Windows.Forms.RadioButton();
-            this.BitsRandSkippingMethod_radioButton = new System.Windows.Forms.RadioButton();
+            this.ChooseContainer_button = new System.Windows.Forms.Button();
+            this.MethodInfo_label = new System.Windows.Forms.Label();
+            this.ChoosedMethod_comboBox = new System.Windows.Forms.ComboBox();
             this.EndNumber_nud = new System.Windows.Forms.NumericUpDown();
             this.InfoEndNumber_label = new System.Windows.Forms.Label();
             this.BeginNumber_nud = new System.Windows.Forms.NumericUpDown();
@@ -50,12 +43,17 @@ namespace ExtractionApplication
             this.Red_radioButton = new System.Windows.Forms.RadioButton();
             this.Green_radioButton = new System.Windows.Forms.RadioButton();
             this.Blue_radioButton = new System.Windows.Forms.RadioButton();
+            this.ContainerPath_textBox = new System.Windows.Forms.TextBox();
+            this.Message_textBox = new System.Windows.Forms.TextBox();
+            this.ContainerPath_label = new System.Windows.Forms.Label();
+            this.ExtractMessage_button = new System.Windows.Forms.Button();
+            this.Cancel_button = new System.Windows.Forms.Button();
+            this.Message_label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Main_splitContainer)).BeginInit();
             this.Main_splitContainer.Panel1.SuspendLayout();
             this.Main_splitContainer.Panel2.SuspendLayout();
             this.Main_splitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FilledContainer_pictureBox)).BeginInit();
-            this.Methods_flowLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EndNumber_nud)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.BeginNumber_nud)).BeginInit();
             this.RGB_flowLayoutPanel.SuspendLayout();
@@ -77,7 +75,9 @@ namespace ExtractionApplication
             // 
             // Main_splitContainer.Panel2
             // 
-            this.Main_splitContainer.Panel2.Controls.Add(this.Methods_flowLayoutPanel);
+            this.Main_splitContainer.Panel2.Controls.Add(this.ChooseContainer_button);
+            this.Main_splitContainer.Panel2.Controls.Add(this.MethodInfo_label);
+            this.Main_splitContainer.Panel2.Controls.Add(this.ChoosedMethod_comboBox);
             this.Main_splitContainer.Panel2.Controls.Add(this.EndNumber_nud);
             this.Main_splitContainer.Panel2.Controls.Add(this.InfoEndNumber_label);
             this.Main_splitContainer.Panel2.Controls.Add(this.BeginNumber_nud);
@@ -91,7 +91,7 @@ namespace ExtractionApplication
             this.Main_splitContainer.Panel2.Controls.Add(this.Cancel_button);
             this.Main_splitContainer.Panel2.Controls.Add(this.Message_label);
             this.Main_splitContainer.Size = new System.Drawing.Size(1371, 770);
-            this.Main_splitContainer.SplitterDistance = 551;
+            this.Main_splitContainer.SplitterDistance = 557;
             this.Main_splitContainer.SplitterWidth = 1;
             this.Main_splitContainer.TabIndex = 0;
             // 
@@ -100,130 +100,52 @@ namespace ExtractionApplication
             this.FilledContainer_pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FilledContainer_pictureBox.Location = new System.Drawing.Point(0, 0);
             this.FilledContainer_pictureBox.Name = "FilledContainer_pictureBox";
-            this.FilledContainer_pictureBox.Size = new System.Drawing.Size(1369, 549);
+            this.FilledContainer_pictureBox.Size = new System.Drawing.Size(1369, 555);
             this.FilledContainer_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.FilledContainer_pictureBox.TabIndex = 0;
             this.FilledContainer_pictureBox.TabStop = false;
             // 
-            // ContainerPath_textBox
+            // ChooseContainer_button
             // 
-            this.ContainerPath_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ContainerPath_textBox.Location = new System.Drawing.Point(271, 7);
-            this.ContainerPath_textBox.Name = "ContainerPath_textBox";
-            this.ContainerPath_textBox.ReadOnly = true;
-            this.ContainerPath_textBox.Size = new System.Drawing.Size(583, 30);
-            this.ContainerPath_textBox.TabIndex = 15;
-            this.ContainerPath_textBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ContainerPath_textBox_MouseDoubleClick);
+            this.ChooseContainer_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ChooseContainer_button.Location = new System.Drawing.Point(583, 7);
+            this.ChooseContainer_button.Name = "ChooseContainer_button";
+            this.ChooseContainer_button.Size = new System.Drawing.Size(70, 30);
+            this.ChooseContainer_button.TabIndex = 27;
+            this.ChooseContainer_button.Text = "Выбор";
+            this.ChooseContainer_button.UseVisualStyleBackColor = true;
+            this.ChooseContainer_button.Click += new System.EventHandler(this.ChooseContainer_button_Click);
             // 
-            // Message_textBox
+            // MethodInfo_label
             // 
-            this.Message_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Message_textBox.Location = new System.Drawing.Point(16, 68);
-            this.Message_textBox.Multiline = true;
-            this.Message_textBox.Name = "Message_textBox";
-            this.Message_textBox.ReadOnly = true;
-            this.Message_textBox.Size = new System.Drawing.Size(637, 141);
-            this.Message_textBox.TabIndex = 12;
+            this.MethodInfo_label.AutoSize = true;
+            this.MethodInfo_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.MethodInfo_label.Location = new System.Drawing.Point(659, 10);
+            this.MethodInfo_label.Name = "MethodInfo_label";
+            this.MethodInfo_label.Size = new System.Drawing.Size(80, 25);
+            this.MethodInfo_label.TabIndex = 26;
+            this.MethodInfo_label.Text = "Метод:";
             // 
-            // ContainerPath_label
+            // ChoosedMethod_comboBox
             // 
-            this.ContainerPath_label.AutoSize = true;
-            this.ContainerPath_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ContainerPath_label.Location = new System.Drawing.Point(11, 10);
-            this.ContainerPath_label.Name = "ContainerPath_label";
-            this.ContainerPath_label.Size = new System.Drawing.Size(260, 25);
-            this.ContainerPath_label.TabIndex = 14;
-            this.ContainerPath_label.Text = "Контейнер с сообщением:";
-            // 
-            // ExtractMessage_button
-            // 
-            this.ExtractMessage_button.Enabled = false;
-            this.ExtractMessage_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ExtractMessage_button.Location = new System.Drawing.Point(1078, 7);
-            this.ExtractMessage_button.Name = "ExtractMessage_button";
-            this.ExtractMessage_button.Size = new System.Drawing.Size(280, 63);
-            this.ExtractMessage_button.TabIndex = 10;
-            this.ExtractMessage_button.Text = "Произвести извлечение";
-            this.ExtractMessage_button.UseVisualStyleBackColor = true;
-            this.ExtractMessage_button.Click += new System.EventHandler(this.ExtractMessage_button_Click);
-            // 
-            // Cancel_button
-            // 
-            this.Cancel_button.Enabled = false;
-            this.Cancel_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Cancel_button.Location = new System.Drawing.Point(1078, 76);
-            this.Cancel_button.Name = "Cancel_button";
-            this.Cancel_button.Size = new System.Drawing.Size(280, 63);
-            this.Cancel_button.TabIndex = 13;
-            this.Cancel_button.Text = "Сброс";
-            this.Cancel_button.UseVisualStyleBackColor = true;
-            this.Cancel_button.Click += new System.EventHandler(this.Cancel_button_Click);
-            // 
-            // Message_label
-            // 
-            this.Message_label.AutoSize = true;
-            this.Message_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Message_label.Location = new System.Drawing.Point(11, 42);
-            this.Message_label.Name = "Message_label";
-            this.Message_label.Size = new System.Drawing.Size(255, 25);
-            this.Message_label.TabIndex = 11;
-            this.Message_label.Text = "Сообщение в контейнере:";
-            // 
-            // Methods_flowLayoutPanel
-            // 
-            this.Methods_flowLayoutPanel.AutoSize = true;
-            this.Methods_flowLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Methods_flowLayoutPanel.Controls.Add(this.SimpleMethod_radioButton);
-            this.Methods_flowLayoutPanel.Controls.Add(this.BitsSkippingMethod_radioButton);
-            this.Methods_flowLayoutPanel.Controls.Add(this.BitsRandSkippingMethod_radioButton);
-            this.Methods_flowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.Methods_flowLayoutPanel.Location = new System.Drawing.Point(659, 117);
-            this.Methods_flowLayoutPanel.Name = "Methods_flowLayoutPanel";
-            this.Methods_flowLayoutPanel.Size = new System.Drawing.Size(413, 92);
-            this.Methods_flowLayoutPanel.TabIndex = 23;
-            // 
-            // SimpleMethod_radioButton
-            // 
-            this.SimpleMethod_radioButton.AutoSize = true;
-            this.SimpleMethod_radioButton.Checked = true;
-            this.SimpleMethod_radioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.SimpleMethod_radioButton.Location = new System.Drawing.Point(3, 3);
-            this.SimpleMethod_radioButton.Name = "SimpleMethod_radioButton";
-            this.SimpleMethod_radioButton.Size = new System.Drawing.Size(195, 24);
-            this.SimpleMethod_radioButton.TabIndex = 0;
-            this.SimpleMethod_radioButton.TabStop = true;
-            this.SimpleMethod_radioButton.Text = "Простейший метод";
-            this.SimpleMethod_radioButton.UseVisualStyleBackColor = true;
-            this.SimpleMethod_radioButton.CheckedChanged += new System.EventHandler(this.MethodChanged);
-            // 
-            // BitsSkippingMethod_radioButton
-            // 
-            this.BitsSkippingMethod_radioButton.AutoSize = true;
-            this.BitsSkippingMethod_radioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BitsSkippingMethod_radioButton.Location = new System.Drawing.Point(3, 33);
-            this.BitsSkippingMethod_radioButton.Name = "BitsSkippingMethod_radioButton";
-            this.BitsSkippingMethod_radioButton.Size = new System.Drawing.Size(248, 24);
-            this.BitsSkippingMethod_radioButton.TabIndex = 1;
-            this.BitsSkippingMethod_radioButton.Text = "Метод с пропуском битов";
-            this.BitsSkippingMethod_radioButton.UseVisualStyleBackColor = true;
-            this.BitsSkippingMethod_radioButton.CheckedChanged += new System.EventHandler(this.MethodChanged);
-            // 
-            // BitsRandSkippingMethod_radioButton
-            // 
-            this.BitsRandSkippingMethod_radioButton.AutoSize = true;
-            this.BitsRandSkippingMethod_radioButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BitsRandSkippingMethod_radioButton.Location = new System.Drawing.Point(3, 63);
-            this.BitsRandSkippingMethod_radioButton.Name = "BitsRandSkippingMethod_radioButton";
-            this.BitsRandSkippingMethod_radioButton.Size = new System.Drawing.Size(405, 24);
-            this.BitsRandSkippingMethod_radioButton.TabIndex = 2;
-            this.BitsRandSkippingMethod_radioButton.Text = "Метод с псевдослучайным пропуском битов";
-            this.BitsRandSkippingMethod_radioButton.UseVisualStyleBackColor = true;
-            this.BitsRandSkippingMethod_radioButton.CheckedChanged += new System.EventHandler(this.MethodChanged);
+            this.ChoosedMethod_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ChoosedMethod_comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ChoosedMethod_comboBox.FormattingEnabled = true;
+            this.ChoosedMethod_comboBox.Items.AddRange(new object[] {
+            "Простейший метод",
+            "Метод с пропуском битов",
+            "Метод со случ. пропуском битов",
+            "Блочный метод"});
+            this.ChoosedMethod_comboBox.Location = new System.Drawing.Point(745, 7);
+            this.ChoosedMethod_comboBox.Name = "ChoosedMethod_comboBox";
+            this.ChoosedMethod_comboBox.Size = new System.Drawing.Size(332, 33);
+            this.ChoosedMethod_comboBox.TabIndex = 25;
+            this.ChoosedMethod_comboBox.SelectedIndexChanged += new System.EventHandler(this.MethodChanged);
             // 
             // EndNumber_nud
             // 
             this.EndNumber_nud.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.EndNumber_nud.Location = new System.Drawing.Point(897, 79);
+            this.EndNumber_nud.Location = new System.Drawing.Point(902, 117);
             this.EndNumber_nud.Minimum = new decimal(new int[] {
             1,
             0,
@@ -231,30 +153,29 @@ namespace ExtractionApplication
             0});
             this.EndNumber_nud.Name = "EndNumber_nud";
             this.EndNumber_nud.Size = new System.Drawing.Size(175, 30);
-            this.EndNumber_nud.TabIndex = 22;
+            this.EndNumber_nud.TabIndex = 24;
             this.EndNumber_nud.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.EndNumber_nud.Visible = false;
-            this.EndNumber_nud.ValueChanged += new System.EventHandler(this.EndNumber_nud_ValueChanged);
             // 
             // InfoEndNumber_label
             // 
             this.InfoEndNumber_label.AutoSize = true;
             this.InfoEndNumber_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoEndNumber_label.Location = new System.Drawing.Point(663, 81);
+            this.InfoEndNumber_label.Location = new System.Drawing.Point(750, 119);
             this.InfoEndNumber_label.Name = "InfoEndNumber_label";
-            this.InfoEndNumber_label.Size = new System.Drawing.Size(228, 25);
-            this.InfoEndNumber_label.TabIndex = 21;
-            this.InfoEndNumber_label.Text = "Макс. число пропусков:";
+            this.InfoEndNumber_label.Size = new System.Drawing.Size(146, 25);
+            this.InfoEndNumber_label.TabIndex = 23;
+            this.InfoEndNumber_label.Text = "Высота блока:";
             this.InfoEndNumber_label.Visible = false;
             // 
             // BeginNumber_nud
             // 
             this.BeginNumber_nud.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BeginNumber_nud.Location = new System.Drawing.Point(897, 43);
+            this.BeginNumber_nud.Location = new System.Drawing.Point(902, 81);
             this.BeginNumber_nud.Minimum = new decimal(new int[] {
             1,
             0,
@@ -262,34 +183,33 @@ namespace ExtractionApplication
             0});
             this.BeginNumber_nud.Name = "BeginNumber_nud";
             this.BeginNumber_nud.Size = new System.Drawing.Size(175, 30);
-            this.BeginNumber_nud.TabIndex = 20;
+            this.BeginNumber_nud.TabIndex = 22;
             this.BeginNumber_nud.Value = new decimal(new int[] {
             1,
             0,
             0,
             0});
             this.BeginNumber_nud.Visible = false;
-            this.BeginNumber_nud.ValueChanged += new System.EventHandler(this.BeginNumber_nud_ValueChanged);
             // 
             // ColorChannel_label
             // 
             this.ColorChannel_label.AutoSize = true;
             this.ColorChannel_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ColorChannel_label.Location = new System.Drawing.Point(860, 8);
+            this.ColorChannel_label.Location = new System.Drawing.Point(861, 50);
             this.ColorChannel_label.Name = "ColorChannel_label";
             this.ColorChannel_label.Size = new System.Drawing.Size(73, 25);
-            this.ColorChannel_label.TabIndex = 19;
+            this.ColorChannel_label.TabIndex = 21;
             this.ColorChannel_label.Text = "Канал:";
             // 
             // InfoBeginNumber_label
             // 
             this.InfoBeginNumber_label.AutoSize = true;
             this.InfoBeginNumber_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InfoBeginNumber_label.Location = new System.Drawing.Point(671, 45);
+            this.InfoBeginNumber_label.Location = new System.Drawing.Point(749, 83);
             this.InfoBeginNumber_label.Name = "InfoBeginNumber_label";
-            this.InfoBeginNumber_label.Size = new System.Drawing.Size(220, 25);
-            this.InfoBeginNumber_label.TabIndex = 18;
-            this.InfoBeginNumber_label.Text = "Мин. число пропусков:";
+            this.InfoBeginNumber_label.Size = new System.Drawing.Size(147, 25);
+            this.InfoBeginNumber_label.TabIndex = 20;
+            this.InfoBeginNumber_label.Text = "Ширина блока:";
             this.InfoBeginNumber_label.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.InfoBeginNumber_label.Visible = false;
             // 
@@ -300,10 +220,10 @@ namespace ExtractionApplication
             this.RGB_flowLayoutPanel.Controls.Add(this.Red_radioButton);
             this.RGB_flowLayoutPanel.Controls.Add(this.Green_radioButton);
             this.RGB_flowLayoutPanel.Controls.Add(this.Blue_radioButton);
-            this.RGB_flowLayoutPanel.Location = new System.Drawing.Point(935, 8);
+            this.RGB_flowLayoutPanel.Location = new System.Drawing.Point(940, 46);
             this.RGB_flowLayoutPanel.Name = "RGB_flowLayoutPanel";
             this.RGB_flowLayoutPanel.Size = new System.Drawing.Size(137, 29);
-            this.RGB_flowLayoutPanel.TabIndex = 17;
+            this.RGB_flowLayoutPanel.TabIndex = 19;
             // 
             // Red_radioButton
             // 
@@ -337,6 +257,69 @@ namespace ExtractionApplication
             this.Blue_radioButton.Text = "B";
             this.Blue_radioButton.UseVisualStyleBackColor = true;
             // 
+            // ContainerPath_textBox
+            // 
+            this.ContainerPath_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ContainerPath_textBox.Location = new System.Drawing.Point(136, 7);
+            this.ContainerPath_textBox.Name = "ContainerPath_textBox";
+            this.ContainerPath_textBox.ReadOnly = true;
+            this.ContainerPath_textBox.Size = new System.Drawing.Size(441, 30);
+            this.ContainerPath_textBox.TabIndex = 15;
+            // 
+            // Message_textBox
+            // 
+            this.Message_textBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Message_textBox.Location = new System.Drawing.Point(16, 68);
+            this.Message_textBox.Multiline = true;
+            this.Message_textBox.Name = "Message_textBox";
+            this.Message_textBox.ReadOnly = true;
+            this.Message_textBox.Size = new System.Drawing.Size(637, 141);
+            this.Message_textBox.TabIndex = 12;
+            // 
+            // ContainerPath_label
+            // 
+            this.ContainerPath_label.AutoSize = true;
+            this.ContainerPath_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ContainerPath_label.Location = new System.Drawing.Point(11, 10);
+            this.ContainerPath_label.Name = "ContainerPath_label";
+            this.ContainerPath_label.Size = new System.Drawing.Size(119, 25);
+            this.ContainerPath_label.TabIndex = 14;
+            this.ContainerPath_label.Text = "Контейнер:";
+            // 
+            // ExtractMessage_button
+            // 
+            this.ExtractMessage_button.Enabled = false;
+            this.ExtractMessage_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ExtractMessage_button.Location = new System.Drawing.Point(1083, 7);
+            this.ExtractMessage_button.Name = "ExtractMessage_button";
+            this.ExtractMessage_button.Size = new System.Drawing.Size(275, 63);
+            this.ExtractMessage_button.TabIndex = 10;
+            this.ExtractMessage_button.Text = "Произвести извлечение";
+            this.ExtractMessage_button.UseVisualStyleBackColor = true;
+            this.ExtractMessage_button.Click += new System.EventHandler(this.ExtractMessage_button_Click);
+            // 
+            // Cancel_button
+            // 
+            this.Cancel_button.Enabled = false;
+            this.Cancel_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Cancel_button.Location = new System.Drawing.Point(1083, 76);
+            this.Cancel_button.Name = "Cancel_button";
+            this.Cancel_button.Size = new System.Drawing.Size(275, 63);
+            this.Cancel_button.TabIndex = 13;
+            this.Cancel_button.Text = "Сброс";
+            this.Cancel_button.UseVisualStyleBackColor = true;
+            this.Cancel_button.Click += new System.EventHandler(this.Cancel_button_Click);
+            // 
+            // Message_label
+            // 
+            this.Message_label.AutoSize = true;
+            this.Message_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Message_label.Location = new System.Drawing.Point(11, 42);
+            this.Message_label.Name = "Message_label";
+            this.Message_label.Size = new System.Drawing.Size(255, 25);
+            this.Message_label.TabIndex = 11;
+            this.Message_label.Text = "Сообщение в контейнере:";
+            // 
             // ExtractionMainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -344,6 +327,7 @@ namespace ExtractionApplication
             this.ClientSize = new System.Drawing.Size(1371, 770);
             this.Controls.Add(this.Main_splitContainer);
             this.Name = "ExtractionMainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.Main_splitContainer.Panel1.ResumeLayout(false);
             this.Main_splitContainer.Panel2.ResumeLayout(false);
@@ -351,8 +335,6 @@ namespace ExtractionApplication
             ((System.ComponentModel.ISupportInitialize)(this.Main_splitContainer)).EndInit();
             this.Main_splitContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.FilledContainer_pictureBox)).EndInit();
-            this.Methods_flowLayoutPanel.ResumeLayout(false);
-            this.Methods_flowLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EndNumber_nud)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.BeginNumber_nud)).EndInit();
             this.RGB_flowLayoutPanel.ResumeLayout(false);
@@ -371,10 +353,8 @@ namespace ExtractionApplication
         private System.Windows.Forms.Button ExtractMessage_button;
         private System.Windows.Forms.Button Cancel_button;
         private System.Windows.Forms.Label Message_label;
-        private System.Windows.Forms.FlowLayoutPanel Methods_flowLayoutPanel;
-        private System.Windows.Forms.RadioButton SimpleMethod_radioButton;
-        private System.Windows.Forms.RadioButton BitsSkippingMethod_radioButton;
-        private System.Windows.Forms.RadioButton BitsRandSkippingMethod_radioButton;
+        private System.Windows.Forms.Label MethodInfo_label;
+        private System.Windows.Forms.ComboBox ChoosedMethod_comboBox;
         private System.Windows.Forms.NumericUpDown EndNumber_nud;
         private System.Windows.Forms.Label InfoEndNumber_label;
         private System.Windows.Forms.NumericUpDown BeginNumber_nud;
@@ -384,6 +364,7 @@ namespace ExtractionApplication
         private System.Windows.Forms.RadioButton Red_radioButton;
         private System.Windows.Forms.RadioButton Green_radioButton;
         private System.Windows.Forms.RadioButton Blue_radioButton;
+        private System.Windows.Forms.Button ChooseContainer_button;
     }
 }
 

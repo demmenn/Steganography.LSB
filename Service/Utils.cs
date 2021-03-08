@@ -12,7 +12,8 @@ namespace Steganography.Service
     {
         Simple = 0,
         BitsSkipping,
-        RandBitsSkipping
+        RandBitsSkipping,
+        Block
     }
 
     public enum Channel
@@ -38,6 +39,7 @@ namespace Steganography.Service
             return new FileInfo(Assembly.GetExecutingAssembly().Location).Directory.FullName;
         }
 
+        // Для всех методов, кроме блочного.
         public static bool CheckSize(int size, Bitmap bm, int number)
         {
             if (number == -1)
@@ -47,6 +49,15 @@ namespace Steganography.Service
             int bmSize = bm.Width * bm.Height;
             size = (INT_SIZE_IN_BIT + size) * number;
             return size <= bmSize;
+        }
+
+        // Для блочного метода.
+        public static bool CheckSize(int size, Bitmap bm, int width, int height)
+        {
+            int bmSize = bm.Width * bm.Height;
+            int blockSize = width * height;
+            size = INT_SIZE_IN_BIT + size;
+            return size <= (bmSize / blockSize);
         }
 
         public static BitArray CreateResultBitArray(string message, int msgSize)

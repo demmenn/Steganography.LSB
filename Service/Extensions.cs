@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Drawing;
 using System.Text;
 
 namespace Steganography.Service
@@ -46,18 +47,38 @@ namespace Steganography.Service
             return array[0];
         }
 
-        public static String ToUTF8Str(this BitArray ba)
+        public static String ToUTF8Str(this BitArray bitArray)
         {
-            byte[] strArr = new byte[ba.Length / 8];
+            byte[] strArr = new byte[bitArray.Length / 8];
             UTF8Encoding encoding = new UTF8Encoding();
-            for (int i = 0; i < ba.Length / 8; i++)
+            for (int i = 0; i < bitArray.Length / 8; i++)
             {
                 for (int index = i * 8, m = 1; index < i * 8 + 8; index++, m *= 2)
                 {
-                    strArr[i] += ba.Get(index) ? (byte)m : (byte)0;
+                    strArr[i] += bitArray.Get(index) ? (byte)m : (byte)0;
                 }
             }
             return encoding.GetString(strArr);
+        }
+
+        public static bool GetBlockXOR(this Bitmap bitmap, int i, int j, int blockWidth, int blockHeight, Channel channel)
+        {
+            bool result = false;
+            int curBlockWidth = i + blockWidth;
+            int curBlockHeight = j + blockHeight;
+
+            for (; i < curBlockWidth && i < bitmap.Width; i++)
+            {
+                j = 0;
+                for (; j < curBlockHeight && j < bitmap.Height; j++)
+                {
+                    Color pixelColor = bitmap.GetPixel(i, j);
+                    byte channelByte = channel == Channel.R ? pixelColor.R : channel == Channel.G ? pixelColor.G : pixelColor.B;
+                    bool lessBit = channelByte.GetBit(0);
+                    result ^= lessBit;
+                }
+            }
+            return result;
         }
     }
 }

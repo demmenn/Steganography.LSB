@@ -1,14 +1,6 @@
 ﻿using Steganography.Service;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ExtractionApplication
@@ -18,29 +10,12 @@ namespace ExtractionApplication
         public ExtractionMainForm()
         {
             InitializeComponent();
-            SimpleMethod_radioButton.Checked = true;
+            ChoosedMethod_comboBox.SelectedIndex = 0;
         }
 
         private Method GetCurrentMethod()
         {
-            return SimpleMethod_radioButton.Checked ? Method.Simple : BitsSkippingMethod_radioButton.Checked ? Method.BitsSkipping : Method.RandBitsSkipping;
-        }
-
-        private void ContainerPath_textBox_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "All Files(*.*)|*.*|PNG Images(*.png)|*.png";
-            fileDialog.FilterIndex = 2;
-            fileDialog.InitialDirectory = Utils.GetAppFolder();
-            fileDialog.RestoreDirectory = true;
-
-            if (fileDialog.ShowDialog() != DialogResult.Cancel)
-            {
-                ContainerPath_textBox.Text = fileDialog.FileName;
-                LoadContainer(fileDialog.FileName);
-                ExtractMessage_button.Enabled = true;
-                Cancel_button.Enabled = true;
-            }
+            return (Method)ChoosedMethod_comboBox.SelectedIndex;
         }
 
         private void LoadContainer(string fileName)
@@ -59,28 +34,32 @@ namespace ExtractionApplication
 
         private void ExtractMessage_button_Click(object sender, EventArgs e)
         {
-            Image image = FilledContainer_pictureBox.Image;
+            Image container = FilledContainer_pictureBox.Image;
             Method method = GetCurrentMethod();
             string message;
-            if (method == Method.Simple || method == Method.BitsSkipping)
+
+            Channel channel = Red_radioButton.Checked ? Channel.R : Green_radioButton.Checked ? Channel.G : Channel.B;
+            int firstNumber = Convert.ToInt32(BeginNumber_nud.Value);
+            int secondNumber = Convert.ToInt32(EndNumber_nud.Value);
+
+            switch (method)
             {
-                Channel channel = Red_radioButton.Checked ? Channel.R : Green_radioButton.Checked ? Channel.G : Channel.B;
-                if (method == Method.Simple)
-                {
-                    message = Extraction.ExtractMessageFromImage(image, channel);
-                }
-                else
-                {
-                    int number = Convert.ToInt32(BeginNumber_nud.Value);
-                    message = Extraction.ExtractMessageFromImage(image, channel, number);
-                }
+                case Method.Simple:
+                    message = Extraction.ExtractMessageFromImage(container, channel);
+                    break;
+                case Method.BitsSkipping:
+                    message = Extraction.ExtractMessageFromImage(container, channel, firstNumber);
+                    break;
+                case Method.RandBitsSkipping:
+                    message = Extraction.ExtractMessageFromImage(container, firstNumber, secondNumber);
+                    break;
+                case Method.Block:
+                    message = Extraction.ExtractMessageFromImage(container, channel, firstNumber, secondNumber);
+                    break;
+                default:
+                    throw new Exception("Error.");
             }
-            else
-            {
-                int beginNumber = Convert.ToInt32(BeginNumber_nud.Value);
-                int endNumber = Convert.ToInt32(EndNumber_nud.Value);
-                message = Extraction.ExtractMessageFromImage(image, beginNumber, endNumber);
-            }
+
             Message_textBox.Text = message;
         }
 
@@ -108,21 +87,41 @@ namespace ExtractionApplication
 
         private void MethodChanged(object sender, EventArgs e)
         {
-            bool _1 = SimpleMethod_radioButton.Checked;
-            bool _2 = BitsSkippingMethod_radioButton.Checked;
-            bool _3 = BitsRandSkippingMethod_radioButton.Checked;
+            Method method = GetCurrentMethod();
 
-            ColorChannel_label.Visible = _1 || _2;
-            RGB_flowLayoutPanel.Visible = _1 || _2;
-            InfoBeginNumber_label.Visible = _2 || _3;
-            BeginNumber_nud.Visible = _2 || _3;
-            InfoEndNumber_label.Visible = _3;
-            EndNumber_nud.Visible = _3;
+            ColorChannel_label.Visible = method == Method.Simple || method == Method.BitsSkipping || method == Method.Block;
+            RGB_flowLayoutPanel.Visible = method == Method.Simple || method == Method.BitsSkipping || method == Method.Block;
+            InfoBeginNumber_label.Visible = method == Method.BitsSkipping || method == Method.RandBitsSkipping || method == Method.Block;
+            BeginNumber_nud.Visible = method == Method.BitsSkipping || method == Method.RandBitsSkipping || method == Method.Block;
+            InfoEndNumber_label.Visible = method == Method.RandBitsSkipping || method == Method.Block;
+            EndNumber_nud.Visible = method == Method.RandBitsSkipping || method == Method.Block;
+
+            if (method == Method.BitsSkipping)
+            {
+                InfoBeginNumber_label.Text = "Число пропусков:";
+                InfoBeginNumber_label.Location = new Point(722, 83);
+            }
+            else if (method == Method.RandBitsSkipping)
+            {
+                InfoBeginNumber_label.Text = "Мин. число пропусков:";
+                InfoBeginNumber_label.Location = new Point(676, 83);
+
+                InfoEndNumber_label.Text = "Макс. число пропусков:";
+                InfoEndNumber_label.Location = new Point(668, 119);
+            }
+            else if (method == Method.Block)
+            {
+                InfoBeginNumber_label.Text = "Ширина блока:";
+                InfoBeginNumber_label.Location = new Point(749, 83);
+
+                InfoEndNumber_label.Text = "Высота блока:";
+                InfoEndNumber_label.Location = new Point(750, 119);
+            }
         }
 
         private void EndNumber_nud_ValueChanged(object sender, EventArgs e)
         {
-            if (EndNumber_nud.Value < BeginNumber_nud.Value)
+            if (GetCurrentMethod() == Method.RandBitsSkipping && EndNumber_nud.Value < BeginNumber_nud.Value)
             {
                 EndNumber_nud.Value = BeginNumber_nud.Value;
                 MessageBox.Show("Максимальное значение пропуска не может быть меньше минимального.", "Предупреждение",
@@ -132,11 +131,28 @@ namespace ExtractionApplication
 
         private void BeginNumber_nud_ValueChanged(object sender, EventArgs e)
         {
-            if (GetCurrentMethod() != Method.BitsSkipping && BeginNumber_nud.Value > EndNumber_nud.Value)
+            if (GetCurrentMethod() == Method.RandBitsSkipping && BeginNumber_nud.Value > EndNumber_nud.Value)
             {
                 BeginNumber_nud.Value = EndNumber_nud.Value;
                 MessageBox.Show("Минимальное значение пропуска не может быть больше максимального.", "Предупреждение",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void ChooseContainer_button_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "All Files(*.*)|*.*|PNG Images(*.png)|*.png";
+            fileDialog.FilterIndex = 2;
+            fileDialog.InitialDirectory = Utils.GetAppFolder();
+            fileDialog.RestoreDirectory = true;
+
+            if (fileDialog.ShowDialog() != DialogResult.Cancel)
+            {
+                ContainerPath_textBox.Text = fileDialog.FileName;
+                LoadContainer(fileDialog.FileName);
+                ExtractMessage_button.Enabled = true;
+                Cancel_button.Enabled = true;
             }
         }
     }
