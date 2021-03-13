@@ -33,6 +33,7 @@ namespace EmbedApplication
             this.Containers_splitContainer = new System.Windows.Forms.SplitContainer();
             this.Container_pictureBox = new System.Windows.Forms.PictureBox();
             this.FilledContainer_pictureBox = new System.Windows.Forms.PictureBox();
+            this.ChooseContainer_button = new System.Windows.Forms.Button();
             this.MethodInfo_label = new System.Windows.Forms.Label();
             this.ChoosedMethod_comboBox = new System.Windows.Forms.ComboBox();
             this.EndNumber_nud = new System.Windows.Forms.NumericUpDown();
@@ -51,7 +52,6 @@ namespace EmbedApplication
             this.Red_radioButton = new System.Windows.Forms.RadioButton();
             this.Green_radioButton = new System.Windows.Forms.RadioButton();
             this.Blue_radioButton = new System.Windows.Forms.RadioButton();
-            this.ChooseContainer_button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Main_splitContainer)).BeginInit();
             this.Main_splitContainer.Panel1.SuspendLayout();
             this.Main_splitContainer.Panel2.SuspendLayout();
@@ -146,6 +146,17 @@ namespace EmbedApplication
             this.FilledContainer_pictureBox.TabIndex = 0;
             this.FilledContainer_pictureBox.TabStop = false;
             // 
+            // ChooseContainer_button
+            // 
+            this.ChooseContainer_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ChooseContainer_button.Location = new System.Drawing.Point(591, 7);
+            this.ChooseContainer_button.Name = "ChooseContainer_button";
+            this.ChooseContainer_button.Size = new System.Drawing.Size(70, 30);
+            this.ChooseContainer_button.TabIndex = 28;
+            this.ChooseContainer_button.Text = "Выбор";
+            this.ChooseContainer_button.UseVisualStyleBackColor = true;
+            this.ChooseContainer_button.Click += new System.EventHandler(this.ChooseContainer_button_Click);
+            // 
             // MethodInfo_label
             // 
             this.MethodInfo_label.AutoSize = true;
@@ -165,7 +176,8 @@ namespace EmbedApplication
             "Простейший метод",
             "Метод с пропуском битов",
             "Метод со случ. пропуском битов",
-            "Блочный метод"});
+            "Блочный метод с одним цв. каналом",
+            "Блочный метод с тремя цв. каналами"});
             this.ChoosedMethod_comboBox.Location = new System.Drawing.Point(753, 7);
             this.ChoosedMethod_comboBox.Name = "ChoosedMethod_comboBox";
             this.ChoosedMethod_comboBox.Size = new System.Drawing.Size(332, 33);
@@ -364,17 +376,6 @@ namespace EmbedApplication
             this.Blue_radioButton.TabIndex = 2;
             this.Blue_radioButton.Text = "B";
             this.Blue_radioButton.UseVisualStyleBackColor = true;
-            // 
-            // ChooseContainer_button
-            // 
-            this.ChooseContainer_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ChooseContainer_button.Location = new System.Drawing.Point(591, 7);
-            this.ChooseContainer_button.Name = "ChooseContainer_button";
-            this.ChooseContainer_button.Size = new System.Drawing.Size(70, 30);
-            this.ChooseContainer_button.TabIndex = 28;
-            this.ChooseContainer_button.Text = "Выбор";
-            this.ChooseContainer_button.UseVisualStyleBackColor = true;
-            this.ChooseContainer_button.Click += new System.EventHandler(this.ChooseContainer_button_Click);
             // 
             // EmbedMainForm
             // 

@@ -13,7 +13,8 @@ namespace Steganography.Service
         Simple = 0,
         BitsSkipping,
         RandBitsSkipping,
-        Block
+        BlockOneChannel,
+        BlockThreeChannel
     }
 
     public enum Channel

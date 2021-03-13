@@ -8,40 +8,51 @@ namespace Steganography.Service
     public static class Extraction
     {
 
-        public static string ExtractMessageFromImage(Image source, Channel channel, int number = -1)
+        public static string Simple(Image source, Channel channel, int number = -1)
         {
             string result = null;
             if (source != null)
             {
                 Bitmap temp = new Bitmap(source);
-                result = ReadMessage(temp, channel, number);
+                result = ReadMessageSimple(temp, channel, number);
             }
             return result;
         }
 
-        public static string ExtractMessageFromImage(Image source, int beginNumber, int endNumber)
+        public static string RandBitsSkipping(Image source, int beginNumber, int endNumber)
         {
             string result = null;
             if (source != null)
             {
                 Bitmap temp = new Bitmap(source);
-                result = ReadMessage(temp, beginNumber, endNumber);
+                result = ReadMessageRandBitsSkipping(temp, beginNumber, endNumber);
             }
             return result;
         }
 
-        public static string ExtractMessageFromImage(Image source, Channel channel, int blockWidth, int blockHeight)
+        public static string BlockOneChannel(Image source, Channel channel, int blockWidth, int blockHeight)
         {
             string result = null;
             if (source != null)
             {
                 Bitmap temp = new Bitmap(source);
-                result = ReadMessage(temp, channel, blockWidth, blockHeight);
+                result = ReadMessageBlockOneChannel(temp, channel, blockWidth, blockHeight);
             }
             return result;
         }
 
-        private static string ReadMessage(Bitmap bitmap, Channel channel, int blockWidth, int blockHeight)
+        public static string BlockThreeChannel(Image source, int blockWidth, int blockHeight)
+        {
+            string result = null;
+            if (source != null)
+            {
+                Bitmap temp = new Bitmap(source);
+                result = ReadMessageBlockThreeChannel(temp, blockWidth, blockHeight);
+            }
+            return result;
+        }
+
+        private static string ReadMessageBlockOneChannel(Bitmap bitmap, Channel channel, int blockWidth, int blockHeight)
         {
             int i = 0, j = 0, msgBitIndex = 0, sizeBitIndex = 0, msgSize = 0;
             string result = null;
@@ -121,6 +132,86 @@ namespace Steganography.Service
             return result;
         }
 
+        private static string ReadMessageBlockThreeChannel(Bitmap bitmap, int blockWidth, int blockHeight)
+        {
+            int i = 0, j = 0, msgBitIndex = 0, sizeBitIndex = 0, msgSize = 0;
+            string result = null;
+
+            bool isSizeReading = false;
+            BitArray sizeArr = new BitArray(Utils.INT_SIZE_IN_BIT);
+
+            for (; i < bitmap.Width; i += blockWidth)
+            {
+                if (i + blockWidth > bitmap.Width)
+                {
+                    break;
+                }
+
+                for (; j < bitmap.Height; j += blockHeight)
+                {
+                    if (j + blockHeight > bitmap.Height)
+                    {
+                        j = 0;
+                        break;
+                    }
+
+                    bool xorBit = bitmap.GetBlockXOR(i, j, blockWidth, blockHeight);
+                    if (sizeBitIndex < Utils.INT_SIZE_IN_BIT)
+                    {
+                        sizeArr[sizeBitIndex] = xorBit;
+                        sizeBitIndex++;
+                    }
+                    else if (sizeBitIndex == Utils.INT_SIZE_IN_BIT)
+                    {
+                        string temp = sizeArr.ToBitStr();
+                        sizeArr = new BitArray(temp.Select(c => c == '1').ToArray());
+                        msgSize = sizeArr.ToInt32();
+                        isSizeReading = true;
+                        break;
+                    }
+                }
+
+                if (sizeBitIndex == Utils.INT_SIZE_IN_BIT && isSizeReading)
+                {
+                    break;
+                }
+            }
+            if (msgSize > 0)
+            {
+                BitArray msgArr = new BitArray(msgSize);
+                for (; i < bitmap.Width; i += blockWidth)
+                {
+                    if (i + blockWidth > bitmap.Width)
+                    {
+                        break;
+                    }
+
+                    for (; j < bitmap.Height; j += blockHeight)
+                    {
+                        if (j + blockHeight > bitmap.Height)
+                        {
+                            j = 0;
+                            break;
+                        }
+
+                        bool xorBit = bitmap.GetBlockXOR(i, j, blockWidth, blockHeight);
+                        if (msgBitIndex < msgSize)
+                        {
+                            msgArr[msgBitIndex] = xorBit;
+                            msgBitIndex++;
+                        }
+                        else
+                        {
+                            result = msgArr.ToUTF8Str();
+                            return result;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         private static int GetMessageSize(Bitmap bitmap, Channel channel, int beginNumber)
         {
             int result = 0;
@@ -166,7 +257,7 @@ namespace Steganography.Service
             return result;
         }
 
-        private static string ReadMessage(Bitmap bitmap, Channel channel, int number)
+        private static string ReadMessageSimple(Bitmap bitmap, Channel channel, int number)
         {
 
             if (number == -1)
@@ -213,7 +304,7 @@ namespace Steganography.Service
             return result;
         }
 
-        private static string ReadMessage(Bitmap bitmap, int beginNumber, int endNumber)
+        private static string ReadMessageRandBitsSkipping(Bitmap bitmap, int beginNumber, int endNumber)
         {
             Random rand = new Random((beginNumber * endNumber) - endNumber);
             Channel channel = (Channel)rand.Next(1, 4);

@@ -45,16 +45,19 @@ namespace ExtractionApplication
             switch (method)
             {
                 case Method.Simple:
-                    message = Extraction.ExtractMessageFromImage(container, channel);
+                    message = Extraction.Simple(container, channel);
                     break;
                 case Method.BitsSkipping:
-                    message = Extraction.ExtractMessageFromImage(container, channel, firstNumber);
+                    message = Extraction.Simple(container, channel, firstNumber);
                     break;
                 case Method.RandBitsSkipping:
-                    message = Extraction.ExtractMessageFromImage(container, firstNumber, secondNumber);
+                    message = Extraction.RandBitsSkipping(container, firstNumber, secondNumber);
                     break;
-                case Method.Block:
-                    message = Extraction.ExtractMessageFromImage(container, channel, firstNumber, secondNumber);
+                case Method.BlockOneChannel:
+                    message = Extraction.BlockOneChannel(container, channel, firstNumber, secondNumber);
+                    break;
+                case Method.BlockThreeChannel:
+                    message = Extraction.BlockThreeChannel(container, firstNumber, secondNumber);
                     break;
                 default:
                     throw new Exception("Error.");
@@ -89,12 +92,12 @@ namespace ExtractionApplication
         {
             Method method = GetCurrentMethod();
 
-            ColorChannel_label.Visible = method == Method.Simple || method == Method.BitsSkipping || method == Method.Block;
-            RGB_flowLayoutPanel.Visible = method == Method.Simple || method == Method.BitsSkipping || method == Method.Block;
-            InfoBeginNumber_label.Visible = method == Method.BitsSkipping || method == Method.RandBitsSkipping || method == Method.Block;
-            BeginNumber_nud.Visible = method == Method.BitsSkipping || method == Method.RandBitsSkipping || method == Method.Block;
-            InfoEndNumber_label.Visible = method == Method.RandBitsSkipping || method == Method.Block;
-            EndNumber_nud.Visible = method == Method.RandBitsSkipping || method == Method.Block;
+            ColorChannel_label.Visible = method == Method.Simple || method == Method.BitsSkipping || method == Method.BlockOneChannel;
+            RGB_flowLayoutPanel.Visible = method == Method.Simple || method == Method.BitsSkipping || method == Method.BlockOneChannel;
+            InfoBeginNumber_label.Visible = method == Method.BitsSkipping || method == Method.RandBitsSkipping || method == Method.BlockOneChannel || method == Method.BlockThreeChannel;
+            BeginNumber_nud.Visible = method == Method.BitsSkipping || method == Method.RandBitsSkipping || method == Method.BlockOneChannel || method == Method.BlockThreeChannel;
+            InfoEndNumber_label.Visible = method == Method.RandBitsSkipping || method == Method.BlockOneChannel || method == Method.BlockThreeChannel;
+            EndNumber_nud.Visible = method == Method.RandBitsSkipping || method == Method.BlockOneChannel || method == Method.BlockThreeChannel ;
 
             if (method == Method.BitsSkipping)
             {
@@ -109,7 +112,7 @@ namespace ExtractionApplication
                 InfoEndNumber_label.Text = "Макс. число пропусков:";
                 InfoEndNumber_label.Location = new Point(668, 119);
             }
-            else if (method == Method.Block)
+            else if (method == Method.BlockOneChannel || method == Method.BlockThreeChannel)
             {
                 InfoBeginNumber_label.Text = "Ширина блока:";
                 InfoBeginNumber_label.Location = new Point(749, 83);

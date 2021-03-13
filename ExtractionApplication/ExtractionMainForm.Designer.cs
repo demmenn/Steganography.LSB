@@ -91,7 +91,7 @@ namespace ExtractionApplication
             this.Main_splitContainer.Panel2.Controls.Add(this.Cancel_button);
             this.Main_splitContainer.Panel2.Controls.Add(this.Message_label);
             this.Main_splitContainer.Size = new System.Drawing.Size(1371, 770);
-            this.Main_splitContainer.SplitterDistance = 560;
+            this.Main_splitContainer.SplitterDistance = 563;
             this.Main_splitContainer.SplitterWidth = 1;
             this.Main_splitContainer.TabIndex = 0;
             // 
@@ -100,7 +100,7 @@ namespace ExtractionApplication
             this.FilledContainer_pictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FilledContainer_pictureBox.Location = new System.Drawing.Point(0, 0);
             this.FilledContainer_pictureBox.Name = "FilledContainer_pictureBox";
-            this.FilledContainer_pictureBox.Size = new System.Drawing.Size(1369, 558);
+            this.FilledContainer_pictureBox.Size = new System.Drawing.Size(1369, 561);
             this.FilledContainer_pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.FilledContainer_pictureBox.TabIndex = 0;
             this.FilledContainer_pictureBox.TabStop = false;
@@ -135,7 +135,8 @@ namespace ExtractionApplication
             "Простейший метод",
             "Метод с пропуском битов",
             "Метод со случ. пропуском битов",
-            "Блочный метод"});
+            "Блочный метод с одним цв. каналом",
+            "Блочный метод с тремя цв. каналами"});
             this.ChoosedMethod_comboBox.Location = new System.Drawing.Point(745, 7);
             this.ChoosedMethod_comboBox.Name = "ChoosedMethod_comboBox";
             this.ChoosedMethod_comboBox.Size = new System.Drawing.Size(332, 33);

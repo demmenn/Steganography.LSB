@@ -9,7 +9,7 @@ namespace Steganography.Service
     public static class Embedding
     {
 
-        public static Image EmbedMessageInImage(string message, Image container, Channel channel, int number = -1)
+        public static Image Simple(string message, Image container, Channel channel, int number = -1)
         {
             Image result = null;
             if (!String.IsNullOrEmpty(message))
@@ -18,14 +18,14 @@ namespace Steganography.Service
                 int messageSizeInBit = Utils.GetMessageSizeInBit(message);
                 if (Utils.CheckSize(messageSizeInBit, temp, number))
                 {
-                    WriteMessage(temp, message, messageSizeInBit, channel, number);
+                    WriteMessageSimple(temp, message, messageSizeInBit, channel, number);
                     result = temp;
                 }
             }
             return result;
         }
 
-        public static Image EmbedMessageInImage(string message, Image container, int beginNumber, int endNumber)
+        public static Image RandBitsSkipping(string message, Image container, int beginNumber, int endNumber)
         {
             Image result = null;
             if (!String.IsNullOrEmpty(message))
@@ -34,14 +34,14 @@ namespace Steganography.Service
                 int messageSizeInBit = Utils.GetMessageSizeInBit(message);
                 if (Utils.CheckSize(messageSizeInBit, temp, (endNumber - beginNumber) / 2))
                 {
-                    WriteMessage(temp, message, messageSizeInBit, beginNumber, endNumber);
+                    WriteMessageRandBitsSkipping(temp, message, messageSizeInBit, beginNumber, endNumber);
                     result = temp;
                 }
             }
             return result;
         }
 
-        public static Image EmbedMessageInImage(string message, Image container, Channel channel, int blockWidth, int blockHeight)
+        public static Image BlockOneChannel(string message, Image container, Channel channel, int blockWidth, int blockHeight)
         {
             Image result = null;
             if (!String.IsNullOrEmpty(message))
@@ -50,14 +50,30 @@ namespace Steganography.Service
                 int messageSizeInBit = Utils.GetMessageSizeInBit(message);
                 if (Utils.CheckSize(messageSizeInBit, temp, blockWidth, blockHeight))
                 {
-                    WriteMessage(temp, message, messageSizeInBit, channel, blockWidth, blockHeight);
+                    WriteMessageBlockOneChannel(temp, message, messageSizeInBit, channel, blockWidth, blockHeight);
                     result = temp;
                 }
             }
             return result;
         }
 
-        private static void WriteMessage(Bitmap bitmap, string message, int msgSize, int beginNumber, int endNumber)
+        public static Image BlockThreeChannel(string message, Image container, int blockWidth, int blockHeight)
+        {
+            Image result = null;
+            if (!String.IsNullOrEmpty(message))
+            {
+                Bitmap temp = new Bitmap(container);
+                int messageSizeInBit = Utils.GetMessageSizeInBit(message);
+                if (Utils.CheckSize(messageSizeInBit, temp, blockWidth, blockHeight))
+                {
+                    WriteMessageBlockThreeChannel(temp, message, messageSizeInBit, blockWidth, blockHeight);
+                    result = temp;
+                }
+            }
+            return result;
+        }
+
+        private static void WriteMessageRandBitsSkipping(Bitmap bitmap, string message, int msgSize, int beginNumber, int endNumber)
         {
             Random rand = new Random((beginNumber * endNumber) - endNumber);
             int bitIndex = 0;
@@ -93,7 +109,7 @@ namespace Steganography.Service
             }
         }
 
-        private static void WriteMessage(Bitmap bitmap, string message, int msgSize, Channel channel, int number)
+        private static void WriteMessageSimple(Bitmap bitmap, string message, int msgSize, Channel channel, int number)
         {
             int bitIndex = 0;
             BitArray bitMessage = Utils.CreateResultBitArray(message, msgSize);
@@ -128,7 +144,7 @@ namespace Steganography.Service
             }
         }
 
-        private static void WriteMessage(Bitmap bitmap, string message, int msgSize, Channel channel, int blockWidth, int blockHeight)
+        private static void WriteMessageBlockOneChannel(Bitmap bitmap, string message, int msgSize, Channel channel, int blockWidth, int blockHeight)
         {
             Random rand = new Random();
             int bitIndex = 0;
@@ -167,8 +183,58 @@ namespace Steganography.Service
                             else
                                 newPixel = Color.FromArgb(pixel.R, pixel.G, newChannelByte);
                             bitmap.SetPixel(randI, randJ, newPixel);
+                        }
 
-                            bool test = bitmap.GetBlockXOR(i, j, blockWidth, blockHeight, channel);
+                        bitIndex++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        private static void WriteMessageBlockThreeChannel(Bitmap bitmap, string message, int msgSize, int blockWidth, int blockHeight)
+        {
+            Random rand = new Random();
+            int bitIndex = 0;
+            BitArray bitMessage = Utils.CreateResultBitArray(message, msgSize);
+
+            for (int i = 0; i < bitmap.Width; i += blockWidth)
+            {
+                if (i + blockWidth > bitmap.Width)
+                {
+                    break;
+                }
+
+                for (int j = 0; j < bitmap.Height; j += blockHeight)
+                {
+                    if (j + blockHeight > bitmap.Height)
+                    {
+                        break;
+                    }
+
+                    if (bitIndex < bitMessage.Length)
+                    {
+                        bool blockXOR = bitmap.GetBlockXOR(i, j, blockWidth, blockHeight);
+                        if (bitMessage[bitIndex] != blockXOR)
+                        {
+                            Channel channel = (Channel)rand.Next(3);
+                            int randI = rand.Next(i, i + blockWidth);
+                            int randJ = rand.Next(j, j + blockHeight);
+                            Color pixel = bitmap.GetPixel(randI, randJ);
+                            byte channelByte = channel == Channel.R ? pixel.R : channel == Channel.G ? pixel.G : pixel.B;
+                            bool lessBit = channelByte.GetBit(0);
+                            byte newChannelByte = lessBit ? (byte)(channelByte - 1) : (byte)(channelByte + 1);
+                            Color newPixel;
+                            if (channel == Channel.R)
+                                newPixel = Color.FromArgb(newChannelByte, pixel.G, pixel.B);
+                            else if (channel == Channel.G)
+                                newPixel = Color.FromArgb(pixel.R, newChannelByte, pixel.B);
+                            else
+                                newPixel = Color.FromArgb(pixel.R, pixel.G, newChannelByte);
+                            bitmap.SetPixel(randI, randJ, newPixel);
                         }
 
                         bitIndex++;

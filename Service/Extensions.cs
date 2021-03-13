@@ -80,5 +80,33 @@ namespace Steganography.Service
             }
             return result;
         }
+
+        public static bool GetBlockXOR(this Bitmap bitmap, int i, int j, int blockWidth, int blockHeight)
+        {
+            bool result = false;
+            int curBlockWidth = i + blockWidth;
+            int curBlockHeight = j + blockHeight;
+
+            for (; i < curBlockWidth && i < bitmap.Width; i++)
+            {
+                j = 0;
+                for (; j < curBlockHeight && j < bitmap.Height; j++)
+                {
+                    Color pixelColor = bitmap.GetPixel(i, j);
+                    byte channelByte = pixelColor.R;
+                    bool lessBit = channelByte.GetBit(0);
+                    result ^= lessBit;
+
+                    channelByte = pixelColor.G;
+                    lessBit = channelByte.GetBit(0);
+                    result ^= lessBit;
+
+                    channelByte = pixelColor.B;
+                    lessBit = channelByte.GetBit(0);
+                    result ^= lessBit;
+                }
+            }
+            return result;
+        }
     }
 }
